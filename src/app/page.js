@@ -1,11 +1,25 @@
 "use client";
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { UserAuth } from './context/AuthContext';
 
 export default function Home() {
   const { user } = UserAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push('/projects');
+    }
+  }, [user, router]);
+
+  if (user) {
+    return null; // Kullanıcı varsa yönlendirildiği için herhangi bir içerik render edilmez
+  }
   console.log(user);
   return (
+    
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <main className="container mx-auto flex-grow p-4 flex flex-col items-center">
         <section className="text-center mb-8">

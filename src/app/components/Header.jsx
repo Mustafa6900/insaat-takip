@@ -2,7 +2,6 @@
 
 import React,{useState,useEffect} from 'react';
 import { UserAuth } from '../context/AuthContext';
-import { useRouter } from 'next/navigation';
 
 const Header = () => {
     const { user, googleSignIn, logOut } = UserAuth();
@@ -23,11 +22,6 @@ const Header = () => {
         } catch (error) {
             console.error('Error signing out:', error);
         }
-    }
-
-    const handleSignUp = async () => {
-        console.log("kayıt ol butonuna tıklandı");
-        // Buraya kayıt olma işlemini ekleyebilirsiniz
     }
 
     useEffect(() => {

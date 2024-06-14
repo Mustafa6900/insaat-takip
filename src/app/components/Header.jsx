@@ -37,7 +37,7 @@ const Header = () => {
     return (
         <header className="bg-white shadow-md">
             <div className="container mx-auto p-4 flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-gray-800">İş Takip Sistemi</h1>
+                <h1 className="text-3xl font-bold text-gray-800">ITS</h1>
                 <nav>
                 <ul className="flex space-x-4">
                         {loading ? null : !user ? (
@@ -45,7 +45,7 @@ const Header = () => {
                                 <li>
                                     <button
                                         onClick={handleSignIn}
-                                        className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-200 transform hover:scale-105"
+                                        className="w-full py-2 px-4 bg-gray-700 hover:bg-gray-900 text-white font-semibold rounded-lg transition duration-200 transform hover:scale-105"
                                     >
                                         Giriş Yap
                                     </button>

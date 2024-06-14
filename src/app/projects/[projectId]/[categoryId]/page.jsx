@@ -26,6 +26,7 @@ const CategoryDetails = ({ params }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const router = useRouter();
   const [user, setUser] = useState(null);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
 
   useEffect(() => {
@@ -73,9 +74,41 @@ const CategoryDetails = ({ params }) => {
     }
   }, [categoryId]);
   
+  useEffect(() => {
+    const checkInstallmentDates = () => {
+      if (!notificationsEnabled) return;
+  
+      const now = new Date();
+      installmentDates.forEach((date, index) => {
+        const daysUntilInstallment = (date - now) / (1000 * 60 * 60 * 24);
+        if (daysUntilInstallment > 0 && daysUntilInstallment <= 5 && !installmentStatus[index]) {
+          new Notification(`Taksit Ödemesi`, {
+            body: `Taksit ${index + 1} için ödeme tarihi yaklaşıyor!`,
+          });
+        }
+      });
+    };
+  
+    const intervalId = setInterval(checkInstallmentDates, 24 * 60 * 60 * 1000); // Günde bir kez kontrol eder
+    return () => clearInterval(intervalId);
+  }, [notificationsEnabled, installmentDates, installmentStatus]);
+
+  const handleNotificationsToggle = () => {
+    if (!notificationsEnabled) {
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          setNotificationsEnabled(true);
+        }
+      });
+    } else {
+      setNotificationsEnabled(false);
+    }
+  };
+    
   const handleAddOrUpdateCategory = async () => {
   const categoryRef = doc(db, 'categories', categoryId);
   const updatedCategory = {
+    masterName: masterName || '',
     name: categoryName || '',
     phone: phoneNumber || '',
     projectStartDate: projectStartDate || '',
@@ -425,6 +458,14 @@ const CategoryDetails = ({ params }) => {
                     className="border p-2 rounded-lg w-full"
                   />
                 </div>
+                <div className="mt-6">
+      <button
+        onClick={handleNotificationsToggle}
+        className={`py-2 px-4 rounded-lg shadow ${notificationsEnabled ? 'bg-green-500' : 'bg-red-500'} text-white`}
+      >
+        {notificationsEnabled ? 'Bildirimleri Kapat' : 'Bildirimleri Aç'}
+      </button>
+    </div>
                 <div className="mt-6">
                   <button
                     onClick={handleAddOrUpdateCategory}

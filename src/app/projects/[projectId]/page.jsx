@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { db } from '../../firebase';
+import { db, auth } from '../../firebase';
 import { collection, addDoc, query, where, onSnapshot } from 'firebase/firestore';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { onAuthStateChanged } from 'firebase/auth';
+
 
 const ProjectDetails = ({ params }) => {
   const { projectId } = params;
@@ -11,6 +14,9 @@ const ProjectDetails = ({ params }) => {
   const [newCategory, setNewCategory] = useState('');
   const [newCategoryColor, setNewCategoryColor] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (projectId) {
@@ -23,6 +29,19 @@ const ProjectDetails = ({ params }) => {
       return () => unsubscribe();
     }
   }, [projectId]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+        setCategories([]);
+        router.push('/');
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   const handleAddCategory = async () => {
     if (newCategory.trim() && newCategoryColor) {

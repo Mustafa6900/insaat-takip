@@ -26,7 +26,7 @@ const CategoryDetails = ({ params }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+//  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const CategoryDetails = ({ params }) => {
     }
   }, [categoryId]);
   
-  useEffect(() => {
+    {/* useEffect(() => {
     const checkInstallmentDates = () => {
       if (!notificationsEnabled) return;
   
@@ -91,9 +91,9 @@ const CategoryDetails = ({ params }) => {
   
     const intervalId = setInterval(checkInstallmentDates, 24 * 60 * 60 * 1000); // Günde bir kez kontrol eder
     return () => clearInterval(intervalId);
-  }, [notificationsEnabled, installmentDates, installmentStatus]);
+  }, [notificationsEnabled, installmentDates, installmentStatus]); */}
 
-  const handleNotificationsToggle = () => {
+  /*const handleNotificationsToggle = () => {
     if (!notificationsEnabled) {
       Notification.requestPermission().then(permission => {
         if (permission === 'granted') {
@@ -103,8 +103,8 @@ const CategoryDetails = ({ params }) => {
     } else {
       setNotificationsEnabled(false);
     }
-  };
-    
+  };*/
+  
   const handleAddOrUpdateCategory = async () => {
   const categoryRef = doc(db, 'categories', categoryId);
   const updatedCategory = {
@@ -142,7 +142,6 @@ const CategoryDetails = ({ params }) => {
     const categoryRef = doc(db, 'categories', categoryId);
     await setDoc(categoryRef, { files: updatedFiles }, { merge: true });
   };
-
 
   const handleReceiptUpload = async (e) => {
     const uploadedReceipts = [];
@@ -459,12 +458,12 @@ const CategoryDetails = ({ params }) => {
                   />
                 </div>
                 <div className="mt-6">
-      <button
+      {/*<button
         onClick={handleNotificationsToggle}
         className={`py-2 px-4 rounded-lg shadow ${notificationsEnabled ? 'bg-green-500' : 'bg-red-500'} text-white`}
       >
         {notificationsEnabled ? 'Bildirimleri Kapat' : 'Bildirimleri Aç'}
-      </button>
+      </button>*/}
     </div>
                 <div className="mt-6">
                   <button

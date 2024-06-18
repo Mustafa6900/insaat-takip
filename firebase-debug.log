@@ -1,0 +1,25 @@
+[debug] [2024-06-18T14:25:35.922Z] ----------------------------------------------------------------------
+[debug] [2024-06-18T14:25:35.929Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\fener\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-06-18T14:25:35.930Z] CLI Version:   13.11.2
+[debug] [2024-06-18T14:25:35.930Z] Platform:      win32
+[debug] [2024-06-18T14:25:35.931Z] Node Version:  v20.14.0
+[debug] [2024-06-18T14:25:35.931Z] Time:          Tue Jun 18 2024 17:25:35 GMT+0300 (GMT+03:00)
+[debug] [2024-06-18T14:25:35.931Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-06-18T14:25:36.142Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-06-18T14:25:36.144Z] > authorizing via signed-in user (feneryum69@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\fener\OneDrive\Masaüstü\insaat-takip
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+

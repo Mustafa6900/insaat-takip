@@ -243,7 +243,7 @@ const CategoryDetails = ({ params }) => {
     setRemainingAmount(formatCurrency(parseCurrency(totalJobCost) - rawValue));
   };
   return (
-    <div className="max-w-3xl mx-auto my-12 p-6 bg-white rounded-lg shadow-lg mt-12">
+    <div className="max-w-3xl mx-auto my-12 p-6 bg-white rounded-lg shadow-md mt-12 sm:my-6 ">
       <div>
         <h1 className="text-3xl font-bold mb-4 text-center">{categoryName}</h1>
         <div className="space-y-4">

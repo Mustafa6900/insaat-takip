@@ -17,12 +17,18 @@ module.exports = {
           '0%, 20%': { transform: 'scale(1)' },
           '60%': { transform: 'scale(1.1)' },
         },
+        wiggle: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translate(10px)' },
+          '75%': { transform: 'translate(-10px)' },
+        },
       },
       animation: {
         pulse: 'pulse 3s ease-in-out infinite',
+        wiggle: 'wiggle 1s ease-in-out infinite',
       },
       screens: {
-        'sm': '640px',
+        'sm': '340px',
         'md': '768px',
         'lg': '1024px',
         'xl': '1280px',

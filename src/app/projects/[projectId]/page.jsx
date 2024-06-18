@@ -58,12 +58,12 @@ const ProjectDetails = ({ params }) => {
 
   return (
     <div className="p-12">
-      <h1 className="text-4xl font-bold mb-8">İnşaat Kalemleri</h1>
-      <div className="grid grid-cols-3 gap-8 text-xl font-bold">
+      <h1 className="text-4xl font-bold mb-8 sm:text-2xl">İnşaat Kalemleri</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-6 gap-4 text-2xl sm:text-sm font-bold ">
         {categories.map((category) => (
           <Link key={category.id} href={`/projects/${projectId}/${category.id}`}>
             <div
-              className={`h-32 flex items-center justify-center bg-gray-500 ${category.color} rounded-lg shadow-lg hover:bg-teal-400 text-white transition-transform transform hover:scale-105 active:scale-95 cursor-pointer`}
+              className={`p-4 hover:bg-teal-400 flex items-center justify-center ${category.color} rounded-3xl text-white transition-transform transform hover:scale-105 active:scale-95`}
             >
               {category.name}
             </div>
@@ -71,7 +71,7 @@ const ProjectDetails = ({ params }) => {
         ))}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="h-32 p-6 bg-gray-800 rounded-lg shadow-lg text-white flex items-center justify-center transition-transform transform hover:scale-105 hover:bg-teal-400 active:scale-95"
+          className="p-4 bg-gray-500 rounded-3xl shadow-lg text-white flex items-center justify-center transition-transform transform hover:scale-105 hover:bg-teal-400 active:scale-95"
         >
           <span className="animate-pulse">+ Kategori Ekle</span>
         </button>

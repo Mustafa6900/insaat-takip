@@ -1,10 +1,12 @@
 "use client";
+
 import { useState, useEffect } from 'react';
 import { db, auth } from '../firebase';
 import { collection, addDoc, getDocs, query, where, deleteDoc, doc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { MdClose } from 'react-icons/md';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -14,8 +16,7 @@ const Projects = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [projectToDelete, setProjectToDelete] = useState(null);
-  const [deleteProjectId, setDeleteProjectId] = useState(null); // State to track which project to delete
+  const [deleteProjectId, setDeleteProjectId] = useState(null); 
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -74,26 +75,24 @@ const Projects = () => {
 
   return (
     <div className="p-12">
-      <h1 className="text-4xl font-bold mb-8">Projeler</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 text-2xl font-bold">
+      <h1 className="text-4xl font-bold mb-8 sm:text-3xl">Projeler</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-6 gap-4 text-2xl sm:text-sm font-bold ">
         {projects.map((project) => (
-          <div key={project.id} className={`relative w-64 h-64 hover:bg-teal-400 flex items-center justify-center ${project.color} rounded-3xl shadow-lg text-white transition-transform transform hover:scale-105 active:scale-95`}>
-            <Link key={project.id} href={`/projects/${project.id}`} className={`w-64 h-64 hover:bg-teal-400 flex items-center justify-center ${project.color} rounded-3xl shadow-lg text-white transition-transform transform hover:scale-105 active:scale-95`}>
+          <div key={project.id} className={`rounded-3xl text-white transition-transform transform hover:scale-105 active:scale-95`}>
+            <Link key={project.id} href={`/projects/${project.id}`} className={`p-4 hover:bg-teal-400 flex items-center justify-center ${project.color} rounded-3xl text-white transition-transform transform hover:scale-105 active:scale-95`}>
               {project.name}
             </Link>
             <button
-  onClick={() => openDeleteModal(project.id)}
-  className="absolute top-0 right-0 mt-2 mr-2 text-white  rounded-full w-8 h-8 flex items-center justify-center hover:text-black"
-  style={{ textAlign: 'center' }}
->
-x
-</button>
+              onClick={() => openDeleteModal(project.id)}
+              className="absolute top-0 right-0 px-3 py-2 text-white text-2xl sm:px-4 sm:py-4 sm:text-2xl flex items-center justify-center hover:text-black transition-colors">
+              <MdClose />
+            </button>
 
           </div>
         ))}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="w-64 h-64 p-6 bg-gray-500 rounded-3xl shadow-lg text-white flex items-center justify-center transition-transform transform hover:scale-105 hover:bg-teal-400 active:scale-95"
+          className="p-4 bg-gray-500 rounded-3xl shadow-lg text-white flex items-center justify-center transition-transform transform hover:scale-105 hover:bg-teal-400 active:scale-95"
         >
           <span className="animate-pulse">+ Proje Ekle</span>
         </button>

@@ -243,7 +243,7 @@ const CategoryDetails = ({ params }) => {
   };
   return (
     <div className="max-w-3xl mx-auto my-12 p-6 bg-white rounded-lg shadow-md mt-12 sm:my-6 ">
-      <div>
+        <div className="bg-gray-100 p-4 rounded-lg">
         <h1 className="text-3xl font-bold mb-4 text-center">{categoryName}</h1>
         <div className="space-y-4">
           <div className="flex flex-col">
@@ -253,7 +253,7 @@ const CategoryDetails = ({ params }) => {
               value={masterName}
               readOnly
               placeholder=" Detaylı Bilgiler bölümünden güncelleyebilirsiniz"
-              className="border p-2 rounded-lg w-full bg-gray-100 "
+              className="border p-2 rounded-lg w-full"
             />
             <label className="mb-2 mt-4 font-semibold">Telefon Numarası:</label>
             <input
@@ -261,7 +261,7 @@ const CategoryDetails = ({ params }) => {
               value={phoneNumber}
               readOnly
               placeholder=" Detaylı Bilgiler bölümünden güncelleyebilirsiniz"
-              className="border p-2 rounded-lg w-full bg-gray-100 "
+              className="border p-2 rounded-lg w-full "
             />
           </div>
           <div className="mt-6">
@@ -269,17 +269,17 @@ const CategoryDetails = ({ params }) => {
             <div className="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.isArray(files) && files.length > 0 ? (
                 files.map((file, index) => (
-                  <div key={index} className="relative flex items-center justify-center bg-gray-300 rounded-lg shadow p-4 hover:shadow-lg transition-all">
+                  <div key={index} className="relative flex items-center justify-center bg-white rounded-lg shadow p-4 hover:shadow-lg transition-all">
                     <a href={file.url} target="_blank" rel="noopener noreferrer" className="truncate">{file.name}</a>
                     <button onClick={() => handleDeleteFile(index)} className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
-                  </div>
+                  </div>  
                 ))
               ) : (
-                <div className="mt-2 flex bg-gray-100 rounded-lg shadow p-2 col-span-1 md:col-span-2 lg:col-span-3">
+                <div className="mt-2 flex bg-white rounded-lg shadow p-2 col-span-1 md:col-span-2 lg:col-span-3">
                   <span className="text-gray-400 font-semibold mx-2">Detaylı Bilgiler bölümünden dosya yükleyin</span>
                 </div>
               )}
@@ -290,7 +290,7 @@ const CategoryDetails = ({ params }) => {
             <div className="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.isArray(receipts) && receipts.length > 0 ? (
                 receipts.map((receipt, index) => (
-                  <div key={index} className="relative flex items-center justify-center bg-gray-300 rounded-lg shadow p-4 hover:shadow-lg transition-all">
+                  <div key={index} className="relative flex items-center justify-center bg-white rounded-lg shadow p-4 hover:shadow-lg transition-all">
                     <a href={receipt.url} target="_blank" rel="noopener noreferrer" className="truncate">{receipt.name}</a>
                     <button onClick={() => handleDeleteReceipt(index)} className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -300,7 +300,7 @@ const CategoryDetails = ({ params }) => {
                   </div>
                 ))
               ) : (
-                <div className="mt-2 flex bg-gray-100 rounded-lg shadow p-2 col-span-1 md:col-span-2 lg:col-span-3">
+                <div className="mt-2 flex bg-white rounded-lg shadow p-2 col-span-1 md:col-span-2 lg:col-span-3">
                   <span className="text-gray-400 mx-2 font-semibold">Detaylı Bilgiler bölümünden makbuz yükleyin</span>
                 </div>
               )}
@@ -312,7 +312,7 @@ const CategoryDetails = ({ params }) => {
         type="text"
         value={remainingAmount}
         readOnly
-        className="border p-2 rounded-lg w-full bg-gray-100"
+        className="border p-2 rounded-lg w-full bg-white"
       />
     </div>
         </div>
@@ -320,7 +320,7 @@ const CategoryDetails = ({ params }) => {
       <div className="mt-6">
         <button
           onClick={handleFlipCard}
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg shadow"
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-8 rounded-lg shadow"
         >
           Detaylı Bilgileri Görüntüle
         </button>
@@ -328,7 +328,7 @@ const CategoryDetails = ({ params }) => {
       {isFlipped && (
         <div className="flip-card mt-6">
           <div className="flip-card-inner">
-            <div className="flip-card-front"></div>
+          
             <div className="flip-card-back bg-gray-100 p-4 rounded-lg">
               <h2 className="text-xl font-semibold mb-4">Detaylı Bilgiler</h2>
               <div className="space-y-4">
@@ -356,7 +356,7 @@ const CategoryDetails = ({ params }) => {
                     type="file"
                     multiple
                     onChange={handleFileUpload}
-                    className="border p-2 rounded-lg w-full"
+                    className="border p-2 rounded-lg w-full bg-white"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -454,7 +454,7 @@ const CategoryDetails = ({ params }) => {
                     type="file"
                     multiple
                     onChange={handleReceiptUpload}
-                    className="border p-2 rounded-lg w-full"
+                    className="border p-2 rounded-lg w-full bg-white"
                   />
                 </div>
                 <div className="mt-6">

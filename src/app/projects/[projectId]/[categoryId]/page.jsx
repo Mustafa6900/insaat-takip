@@ -490,4 +490,6 @@ const CategoryDetails = ({ params }) => {
   );
 };
 
+
+
 export default CategoryDetails;

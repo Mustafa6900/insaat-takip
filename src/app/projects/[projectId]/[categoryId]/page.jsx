@@ -22,8 +22,12 @@ const CategoryDetails = ({ params }) => {
   const [paymentInstallments, setPaymentInstallments] = useState(0);
   const [installmentDates, setInstallmentDates] = useState([]);
   const [installmentStatus, setInstallmentStatus] = useState([]);
+  const [installmentAmounts, setInstallmentAmounts] = useState([]);
   const [paymentStartDate, setPaymentStartDate] = useState('');
   const [isFlipped, setIsFlipped] = useState(false);
+  const [buttonText, setButtonText] = useState('Detaylı Bilgileri Görüntüle');
+  const [isEditable, setIsEditable] = useState(true);
+
   const router = useRouter();
   const [user, setUser] = useState(null);
 //  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -58,7 +62,7 @@ const CategoryDetails = ({ params }) => {
         setTotalJobCost(categoryData.totalJobCost || '');
         setPaymentMade(categoryData.paymentMade || '');
         setPaymentInstallments(categoryData.paymentInstallments || 0);
-        setRemainingAmount(formatCurrency(categoryData.totalJobCost - categoryData.paymentMade));
+        setRemainingAmount(formatCurrency(categoryData.remainingAmount));
         setPaymentStartDate(categoryData.paymentStartDate || '');
         setInstallmentDates(
           categoryData.installmentDates
@@ -66,6 +70,8 @@ const CategoryDetails = ({ params }) => {
             : []
         );
         setInstallmentStatus(categoryData.installmentStatus || Array(categoryData.paymentInstallments).fill(false));
+        setInstallmentAmounts(categoryData.installmentAmounts || []);
+        setIsEditable(!categoryData.isEditable);
       }
     };
   
@@ -73,6 +79,20 @@ const CategoryDetails = ({ params }) => {
       fetchCategoryDetails();
     }
   }, [categoryId]);
+
+  useEffect(() => {
+    if (paymentInstallments > 0 && totalJobCost && paymentMade) {
+      const remaining = parseCurrency(totalJobCost) - parseCurrency(paymentMade);
+      const installmentAmount = remaining / paymentInstallments;
+      setInstallmentAmounts(Array(paymentInstallments).fill(installmentAmount));
+    }
+  }, [paymentInstallments, totalJobCost, paymentMade]);
+
+  useEffect(() => {
+    if (paymentStartDate && paymentInstallments > 0) {
+      calculateInstallmentDates(paymentStartDate, paymentInstallments);
+    }
+  }, [paymentStartDate, paymentInstallments]);
   
     {/* useEffect(() => {
     const checkInstallmentDates = () => {
@@ -106,29 +126,32 @@ const CategoryDetails = ({ params }) => {
   };*/
   
   const handleAddOrUpdateCategory = async () => {
-  const categoryRef = doc(db, 'categories', categoryId);
-  const updatedCategory = {
-    masterName: masterName || '',
-    name: categoryName || '',
-    phone: phoneNumber || '',
-    projectStartDate: projectStartDate || '',
-    endDate: endDate || '',
-    totalJobCost: parseCurrency(totalJobCost) || 0,
-    paymentMade: parseCurrency(paymentMade) || 0,
-    paymentInstallments: paymentInstallments || 0,
-    paymentStartDate: paymentStartDate || '',
-    files: files || [],
-    receipts: receipts || [],
-    projectId,
-    installmentDates: installmentDates.map(date => date.toISOString().split('T')[0]),
-    installmentStatus: installmentStatus || []
+    const categoryRef = doc(db, 'categories', categoryId);
+    const updatedCategory = {
+      masterName: masterName || '',
+      name: categoryName || '',
+      phone: phoneNumber || '',
+      projectStartDate: projectStartDate || '',
+      endDate: endDate || '',
+      totalJobCost: parseCurrency(totalJobCost) || 0,
+      paymentMade: parseCurrency(paymentMade) || 0,
+      paymentInstallments: paymentInstallments || 0,
+      paymentStartDate: paymentStartDate || '',
+      files: files || [],
+      receipts: receipts || [],
+      projectId,
+      installmentDates: installmentDates.map(date => date.toISOString().split('T')[0]),
+      installmentStatus: installmentStatus || [],
+      remainingAmount: parseCurrency(remainingAmount),  // Burada yeni remainingAmount ekliyoruz
+      installmentAmounts: installmentAmounts || [], 
+      isEditable: true,
+    };
+  
+    await setDoc(categoryRef, updatedCategory, { merge: true });
+    setRemainingAmount(formatCurrency(parseCurrency(totalJobCost) - parseCurrency(paymentMade)));
+    alert('Kategori başarıyla güncellendi!');
   };
-
-  await setDoc(categoryRef, updatedCategory, { merge: true });
-  setRemainingAmount(formatCurrency(parseCurrency(totalJobCost) - parseCurrency(paymentMade)));
-  alert('Kategori başarıyla güncellendi!');
-  };
-
+  
   const handleFileUpload = async (e) => {
     const uploadedFiles = [];
     for (let file of e.target.files) {
@@ -143,35 +166,19 @@ const CategoryDetails = ({ params }) => {
     await setDoc(categoryRef, { files: updatedFiles }, { merge: true });
   };
 
-  const handleReceiptUpload = async (e) => {
-    const uploadedReceipts = [];
-    for (let file of e.target.files) {
-      const url = await uploadFile(file);
-      uploadedReceipts.push({ name: file.name, url });
-    }
-    const updatedReceipts = [...receipts, ...uploadedReceipts];
-    setReceipts(updatedReceipts);
-
-    // Güncellenmiş makbuzları hemen Firebase'e kaydet
-    const categoryRef = doc(db, 'categories', categoryId);
-    await setDoc(categoryRef, { receipts: updatedReceipts }, { merge: true });
-  };
-
   const handleDeleteFile = async (index) => {
+    const confirmation = window.confirm("Dosyayı silmek istiyor musunuz?");
+    if (!confirmation) {
+      return;
+    }
+  
     const updatedFiles = files.filter((_, i) => i !== index);
     setFiles(updatedFiles);
-
+  
     const categoryRef = doc(db, 'categories', categoryId);
     await setDoc(categoryRef, { files: updatedFiles }, { merge: true });
   };
-
-  const handleDeleteReceipt = async (index) => {
-    const updatedReceipts = receipts.filter((_, i) => i !== index);
-    setReceipts(updatedReceipts);
-
-    const categoryRef = doc(db, 'categories', categoryId);
-    await setDoc(categoryRef, { receipts: updatedReceipts }, { merge: true });
-  };
+  
 
   const handleDeleteCategory = async () => {
     const confirmation = window.confirm("Kategoriyi silmek istiyor musunuz?");
@@ -182,7 +189,7 @@ const CategoryDetails = ({ params }) => {
     const categoryRef = doc(db, 'categories', categoryId);
     await deleteDoc(categoryRef);
     alert('Kategori başarıyla silindi!');
-    router.push('/');
+    router.push(`/projects/${projectId}`);
   };
 
   const handleInstallmentsChange = (e) => {
@@ -193,13 +200,47 @@ const CategoryDetails = ({ params }) => {
   };
 
   const handleInstallmentStatusChange = async (index) => {
+    if (installmentStatus[index]) {
+      // Eğer taksit ödendiyse buton tıklanamaz hale gelir
+      return;
+    }
+  
     const newStatus = [...installmentStatus];
-    newStatus[index] = !newStatus[index];
-    setInstallmentStatus(newStatus);
-
-    // Ödeme durumunu hemen Firebase'e kaydet
-    const categoryRef = doc(db, 'categories', categoryId);
-    await setDoc(categoryRef, { installmentStatus: newStatus }, { merge: true });
+    const newRemainingAmount = parseCurrency(remainingAmount);
+    const paidAmount = installmentAmounts[index];
+  
+    // Pop-up ile makbuz dosyası yükleme isteği
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'application/pdf,image/*';
+  
+    fileInput.onchange = async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const url = await uploadFile(file); // uploadFile fonksiyonu dosyayı Firebase'e yükler ve URL döner
+        newStatus[index] = true;
+        setRemainingAmount(formatCurrency(newRemainingAmount - paidAmount));
+  
+        // Makbuzu receipt dizisine ekleyin
+        const newReceipts = [...receipts, { url, name: `Makbuz ${index + 1}`, installmentNumber: index + 1 }];
+        setReceipts(newReceipts);
+  
+        // Firebase'deki kalan tutarı ve ödeme durumunu güncelle
+        const categoryRef = doc(db, 'categories', categoryId);
+        await setDoc(categoryRef, {
+          remainingAmount: newRemainingAmount - paidAmount,
+          installmentStatus: newStatus,
+          receipts: newReceipts,
+        }, { merge: true });
+  
+        alert("Ödeme başarılı ve makbuz eklendi!");
+      } else {
+        alert("Makbuz yüklenmeden ödeme durumu değiştirilemez.");
+      }
+      setInstallmentStatus(newStatus);
+    };
+  
+    fileInput.click();
   };
 
   const calculateInstallmentDates = (startDate, installments) => {
@@ -213,11 +254,10 @@ const CategoryDetails = ({ params }) => {
     setInstallmentDates(dates);
   };
 
-  useEffect(() => {
-    calculateInstallmentDates(paymentStartDate, paymentInstallments);
-  }, [paymentStartDate, paymentInstallments]);
-
   const handleFlipCard = () => {
+    setButtonText(prevText => 
+      prevText === 'Detaylı Bilgileri Görüntüle' ? 'Bilgileri Gizle' : 'Detaylı Bilgileri Görüntüle'
+    );
     setIsFlipped(!isFlipped);
   };
 
@@ -257,11 +297,12 @@ const CategoryDetails = ({ params }) => {
             />
             <label className="mb-2 mt-4 font-semibold">Telefon Numarası:</label>
             <input
-              type="text"
+              type="tel"
               value={phoneNumber}
               readOnly
               placeholder=" Detaylı Bilgiler bölümünden güncelleyebilirsiniz"
               className="border p-2 rounded-lg w-full "
+              pattern="\d*"
             />
           </div>
           <div className="mt-6">
@@ -290,15 +331,9 @@ const CategoryDetails = ({ params }) => {
             <div className="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.isArray(receipts) && receipts.length > 0 ? (
                 receipts.map((receipt, index) => (
-                  <div key={index} className="relative flex items-center justify-center bg-white rounded-lg shadow p-4 hover:shadow-lg transition-all">
-                    <a href={receipt.url} target="_blank" rel="noopener noreferrer" className="truncate">{receipt.name}</a>
-                    <button onClick={() => handleDeleteReceipt(index)} className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-                ))
+                        <div key={index} className="relative flex flex-col bg-white rounded-lg shadow p-4 hover:shadow-lg transition-all">
+                            <a href={receipt.url} target="_blank" rel="noopener noreferrer" className="truncate">{receipt.name}. Ay</a>
+                          </div>))
               ) : (
                 <div className="mt-2 flex bg-white rounded-lg shadow p-2 col-span-1 md:col-span-2 lg:col-span-3">
                   <span className="text-gray-400 mx-2 font-semibold">Detaylı Bilgiler bölümünden makbuz yükleyin</span>
@@ -322,7 +357,7 @@ const CategoryDetails = ({ params }) => {
           onClick={handleFlipCard}
           className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-8 rounded-lg shadow"
         >
-          Detaylı Bilgileri Görüntüle
+         {buttonText}
         </button>
       </div>
       {isFlipped && (
@@ -366,6 +401,8 @@ const CategoryDetails = ({ params }) => {
                     value={projectStartDate}
                     onChange={(e) => setProjectStartDate(e.target.value)}
                     className="border p-2 rounded-lg w-full"
+                    readOnly={!isEditable}
+
                   />
                 </div>
                 <div className="flex flex-col">
@@ -375,6 +412,8 @@ const CategoryDetails = ({ params }) => {
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
                     className="border p-2 rounded-lg w-full"
+                    readOnly={!isEditable}
+
                   />
                 </div>
                 <div className="flex flex-col">
@@ -384,31 +423,37 @@ const CategoryDetails = ({ params }) => {
         value={formatCurrency(totalJobCost)}
         onChange={handleTotalJobCostChange}
         className="border p-2 rounded-lg w-full"
+        readOnly={!isEditable}
+
       />
     </div>
     <div className="flex flex-col">
-      <label className="mb-2 font-semibold">Yapılan Ödeme:</label>
+      <label className="mb-2 font-semibold">Başlangıç Ödemesi:</label>
       <input
         type="text"
         value={formatCurrency(paymentMade)}
         onChange={handlePaymentMadeChange}
         className="border p-2 rounded-lg w-full"
+        readOnly={!isEditable}
+
       />
-    </div><div className="flex flex-col">
-                  <label className="mb-2 font-semibold">Ödeme Taksitleri (Ay Sayısı):</label>
-                  <select
-                    value={paymentInstallments}
-                    onChange={handleInstallmentsChange}
-                    className="border p-2 rounded-lg w-full"
-                  >
-                    <option value="">Seçiniz</option>
-                    {[1, 3, 6, 12, 24, 36].map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+    </div>
+    <div className="flex flex-col">
+  <label className="mb-2 font-semibold">Ödeme Taksitleri (Ay Sayısı):</label>
+  <select
+    value={paymentInstallments}
+    onChange={handleInstallmentsChange}
+    className="border p-2 rounded-lg w-full"
+    disabled={!isEditable}
+  >
+    <option value="">Seçiniz</option>
+    {Array.from({ length: 36 }, (_, index) => index + 1).map((option) => (
+      <option key={option} value={option}>
+        {option}
+      </option>
+    ))}
+  </select>
+</div>
 
                 {paymentInstallments > 0 && (
                   <div className="flex flex-col mt-4">
@@ -418,45 +463,39 @@ const CategoryDetails = ({ params }) => {
                       value={paymentStartDate}
                       onChange={(e) => setPaymentStartDate(e.target.value)}
                       className="border p-2 rounded-lg w-full"
+                      readOnly={!isEditable}
+
                     />
                   </div>
                 )}
 
                 {paymentStartDate && (
-                  <div className="space-y-2 mt-4">
-                    {installmentDates.map((date, index) => (
-                      <div key={index} className="flex flex-col">
-                        <label className="mb-2 font-semibold">Taksit {index + 1}:</label>
-                        <div className="flex items-center">
-                          <input
-                            type="date"
-                            value={date.toISOString().split('T')[0]}
-                            readOnly
-                            className="border p-2 rounded-lg w-full bg-gray-100"
-                          />
-                          <button
-                            onClick={() => handleInstallmentStatusChange(index)}
-                            className={`ml-4 py-2 px-4 rounded-lg shadow ${
-                              installmentStatus[index] ? 'bg-green-500' : 'bg-red-500'
-                            } text-white`}
-                          >
-                            {installmentStatus[index] ? 'Ödendi' : 'Ödenmedi'}
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+  <div className="space-y-2 mt-4">
+    {installmentDates.map((date, index) => (
+      <div key={index} className="flex flex-col">
+        <label className="mb-2 font-semibold">Taksit {index + 1}:</label>
+        <div className="flex items-center">
+          <input
+            type="date"
+            value={date.toISOString().split('T')[0]}
+            readOnly
+            className="border p-2 rounded-lg w-full bg-gray-100"
+          />
+          <span className="ml-4">Tutar: {formatCurrency(installmentAmounts[index])} TL</span>
+          <button
+            onClick={() => handleInstallmentStatusChange(index)}
+            className={`ml-4 py-2 px-4 rounded-lg shadow ${
+              installmentStatus[index] ? 'bg-green-500' : 'bg-red-500'
+            } text-white`}
+          >
+            {installmentStatus[index] ? 'Ödendi' : 'Ödenmedi'}
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
                 )}
 
-                <div className="flex flex-col">
-                  <label className="mb-2 font-semibold">Makbuz Yükle:</label>
-                  <input
-                    type="file"
-                    multiple
-                    onChange={handleReceiptUpload}
-                    className="border p-2 rounded-lg w-full bg-white"
-                  />
-                </div>
                 <div className="mt-6">
       {/*<button
         onClick={handleNotificationsToggle}
@@ -468,15 +507,15 @@ const CategoryDetails = ({ params }) => {
                 <div className="mt-6">
                   <button
                     onClick={handleAddOrUpdateCategory}
-                    className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg shadow"
+                    className={`bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg shadow ${isEditable ? '' : 'hidden'}`}
                   >
-                    Kaydet
+                    Kategoriyi Kaydet
                   </button>
                   <button
                     onClick={handleDeleteCategory}
-                    className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg shadow ml-2"
+                    className={`bg-red-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg shadow ${isEditable ? 'hidden' : ''}`}
                   >
-                    Sil
+                    Kategoriyi Sil
                   </button>
 
                 </div>

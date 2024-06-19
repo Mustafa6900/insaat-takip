@@ -58,7 +58,7 @@ const ProjectDetails = ({ params }) => {
 
   return (
     <div className="p-12">
-      <h1 className="text-4xl font-bold mb-8 sm:text-2xl">İnşaat Kalemleri</h1>
+      <h1 className="text-4xl font-bold mb-8 sm:text-2xl">Kategoriler </h1>
       <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-6 gap-4 text-2xl sm:text-sm font-bold ">
         {categories.map((category) => (
           <Link key={category.id} href={`/projects/${projectId}/${category.id}`}>

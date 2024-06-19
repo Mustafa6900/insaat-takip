@@ -94,7 +94,7 @@ const Header = () => {
                   </>
                 ) : (
                   <>
-                    <li className=" sm:hidden flex items-center justify-center">
+                    <li className=" sm:hidden flex items-center justify-center lg:block">
                       <span className="text-gray-800 font-semibold mx-2">{user.displayName}</span>
                     </li>
                     <li className="relative">

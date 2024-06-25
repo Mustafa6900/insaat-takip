@@ -37,6 +37,15 @@ export default function Home() {
           </ul>
         </section>
         <section className="text-center mb-8 w-full">
+          <h2 className="lg:text-2xl font-extrabold text-white mb-4 animate-fadeInDown text-zinc-700 sm:text-lg">Kullanım Kılavuzu</h2>
+          <div className="video-container">
+            <video className="w-full max-w-4xl mx-auto" controls>
+              <source src="/video/kilavuz.mp4" type="video/mp4" />
+              Tarayıcınız video etiketini desteklemiyor.
+            </video>
+          </div>
+        </section> 
+        <section className="text-center mb-8 w-full">
           <h2 className="lg:text-2xl font-extrabold text-white mb-4 animate-fadeInDown text-zinc-700 sm:text-lg">İndirilebilir Uygulama</h2>
           <p className="text-white font-extrabold lg:text-base max-w-full mx-auto animate-fadeInUp text-zinc-500 sm:text-xs">
             İş takip sistemimizi mobil cihazlarınıza indirerek daha hızlı ve kolay bir şekilde kullanabilirsiniz. Hem iOS hem de Android cihazlar için uyumlu uygulamamızla projelerinizi her yerden yönetmenin keyfini çıkarın.

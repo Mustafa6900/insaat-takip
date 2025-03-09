@@ -1,19 +1,44 @@
 'use client';
 
 import { useEffect } from 'react';
-import { getToken, onMessageListener } from './firebase';
+import { onMessageListener } from './firebase';
+import { toast } from 'react-toastify';
 
 export default function ClientSideLogic() {
   useEffect(() => {
-    getToken();
+    // Bildirim izinlerini kontrol et
+    if ('Notification' in window) {
+      if (Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
+    }
 
-    onMessageListener()
-      .then(payload => {
-        console.log('Message received. ', payload);
-        // Mesaj alındığında yapılacak işlemler
+    // Ön planda bildirim dinleyicisi
+    const unsubscribe = onMessageListener()
+      .then((payload) => {
+        // Bildirim geldiğinde toast göster
+        toast.info(payload.notification.body, {
+          toastId: payload.data?.notificationId || 'notification',
+          onClick: () => {
+            // Bildirime tıklandığında yönlendirme yapılabilir
+            if (payload.data?.projectId) {
+              window.location.href = `/projects/${payload.data.projectId}${
+                payload.data.categoryId ? '/' + payload.data.categoryId : ''
+              }`;
+            }
+          },
+        });
       })
-      .catch(err => console.log('failed: ', err));
+      .catch((err) => {
+        console.error('Bildirim dinleme hatası:', err);
+      });
+
+    return () => {
+      if (unsubscribe && typeof unsubscribe === 'function') {
+        unsubscribe();
+      }
+    };
   }, []);
 
   return null;
-}
+} 

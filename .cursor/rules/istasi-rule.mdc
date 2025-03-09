@@ -1,0 +1,22 @@
+---
+description: contractor system
+globs: 
+---
+
+# Custom Rules for Contractor Management System
+
+-The system should be built with Next.js and follow modern UX principles for an improved user experience.
+-Ensure a clean and intuitive UI that simplifies project and financial management.
+-Ensure a consistent and cohesive design across all pages for a professional and seamless experience.
+-Maintain a modular structure, allowing easy addition and modification of project details, documents, and financial records.
+-Automatic item generation (e.g., concrete, wood) must be implemented while allowing full user customization.
+-Users should be able to upload and manage documents related to projects and items efficiently.
+-Financial records, such as payment receipts and installment plans, should be structured in a clear and accessible way.
+-Implement secure authentication and authorization to protect project and financial data.
+-Optimize database queries and API calls for high performance and scalability.
+-Follow best practices for form validation, ensuring required fields and valid data entry.
+-Use responsive design principles, making the system accessible on both desktop and mobile devices.
+-Maintain consistent UI components across the system for a professional look and feel.
+-Implement role-based access control (RBAC) to ensure users have appropriate permissions.
+-Use Markdown for structured documentation but keep flexibility for UI text formatting.
+-Avoid unnecessary complexity; prioritize usability and efficiency in workflows.

@@ -1,7 +1,7 @@
 // firebase.js
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, collection, doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { getMessaging, getToken as fetchToken, onMessage } from 'firebase/messaging';
 
@@ -22,6 +22,8 @@ export const db = getFirestore(app);
 export const storage = getStorage(app);
 export let messaging;
 
+export const notificationsCollection = collection(db, "notifications");
+
 export const uploadFile = async (file) => {
   const storageRef = ref(storage, `files/${file.name}`);
   const uploadTask = uploadBytesResumable(storageRef, file);
@@ -32,7 +34,7 @@ export const uploadFile = async (file) => {
       (snapshot) => {
         // Observe state change events such as progress, pause, and resume
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Upload is ${progress}% done`);
+      
       },
       (error) => {
         // Handle unsuccessful uploads
@@ -57,17 +59,74 @@ if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
     });
 }
 
-export const getToken = async () => {
+// FCM token'ı veritabanında saklamak için bir fonksiyon
+export const saveUserFCMToken = async (userId, token) => {
   try {
-    const currentToken = await fetchToken(messaging, { vapidKey: 'BDmbmI_S0YTeSzGLde8e2ryIGKjz_BXbhcRvzACvdPFMK2zCD0AaPziB5G1fAvOdQh3CRflUzf5WfzlUKar9Ntk' });
-    if (currentToken) {
-      //console.log('Current token for client: ', currentToken);
-      // Token'ı sunucunuza gönderin
-    } else {
-      // console.log('No registration token available. Request permission to generate one.');
+
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+
+    const userTokenRef = doc(db, "userTokens", userId);
+    
+    const tokenData = {
+      fcmToken: token,
+      updatedAt: new Date(),
+      userId: userId, // userId'yi de kaydedelim
+    };
+
+    await setDoc(userTokenRef, tokenData, { merge: true });
+    
+  } catch (error) {
+    console.error("Token kaydetme hatası:", error);
+    // Hatayı yukarı fırlatalım ki, çağıran fonksiyon handle edebilsin
+    throw error;
+  }
+};
+
+export const getToken = async (userId) => {
+  try {
+    if (!messaging) {
+      const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+        scope: '/'
+      });
+      messaging = getMessaging(app);
+    }
+
+    let permission = Notification.permission;
+
+    if (permission === 'default') {
+      permission = await Notification.requestPermission();
+    }
+
+    if (permission !== 'granted') {
+      return null;
+    }
+
+    try {
+      const currentToken = await fetchToken(messaging, { 
+        vapidKey: 'BCXQJSr4NLEG8JmWGsjCKavjoQ7fJYQ9N8JNbOZwLabosNRXfmlBgNm6ubJerDCtC0msXPA2tybe8CBTdXq1y1s'
+      });
+
+      if (currentToken) {
+        try {
+          await saveUserFCMToken(userId, currentToken);
+          return currentToken;
+        } catch (saveError) {
+          console.error('Token kaydedilemedi:', saveError);
+          // Token kaydedilemese bile token'ı döndürelim
+          return currentToken;
+        }
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Token alma hatası:', error);
+      return null;
     }
   } catch (err) {
-    // console.error('An error occurred while retrieving token. ', err);
+    console.error('Genel hata:', err);
+    return null;
   }
 };
 

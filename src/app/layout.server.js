@@ -16,8 +16,8 @@ export default function RootLayout({ children }) {
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <meta name="theme-color" content="#000000" />
-        <title>ITS - İş Takip Sistemi</title>
-        <meta name="description" content="İş Takip Sistemi" />
+        <title>MYS - Müteahhit Yönetim Sistemi</title>
+        <meta name="description" content="Müteahhit Yönetim Sistemi" />
       </head>
       <body className={jetbrainsMono.className}>
         <AuthContextProvider>

@@ -733,8 +733,8 @@ const CategoryDetails = ({ params }) => {
         <main className="pt-24 px-6 pb-6">
           <div className="max-w-[2000px] mx-auto">
             {/* Header */}
-            <div className="flex justify-between items-center mb-8 bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-              <div>
+            <div className="flex flex-col md:flex-row justify-between items-center mb-8 bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+              <div className="mb-4 md:mb-0 w-full text-center md:text-left">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                   {categoryName}
                 </h2>
@@ -742,11 +742,11 @@ const CategoryDetails = ({ params }) => {
                   Kategori Detayları
                 </p>
               </div>
-              <div className="flex gap-3">
+              <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
                 {!isEditing ? (
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="group inline-flex items-center px-6 py-3 rounded-xl 
+                    className="w-full md:w-auto group inline-flex items-center justify-center px-6 py-3 rounded-xl 
                       bg-gradient-to-br from-blue-500 to-blue-600 
                       text-white transition-all duration-300 
                       hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/25 
@@ -770,7 +770,7 @@ const CategoryDetails = ({ params }) => {
                     </span>
                   </button>
                 ) : (
-                  <div className="flex gap-3">
+                  <>
                     <button
                       onClick={() => {
                         setIsEditing(false);
@@ -813,7 +813,7 @@ const CategoryDetails = ({ params }) => {
                           setIsEditable(!initialData.isEditable);
                         }
                       }}
-                      className="group inline-flex items-center px-6 py-3 rounded-xl 
+                      className="w-full md:w-auto group inline-flex items-center justify-center px-6 py-3 rounded-xl 
                         bg-white border border-gray-300
                         text-gray-700 transition-all duration-300 
                         hover:scale-[1.02] hover:shadow-lg hover:shadow-gray-200/25 
@@ -841,7 +841,7 @@ const CategoryDetails = ({ params }) => {
                         id="saveButton"
                         onClick={handleAddOrUpdateCategory}
                         disabled={isLoading}
-                        className="group inline-flex items-center px-6 py-3 rounded-xl 
+                        className="w-full md:w-auto group inline-flex items-center justify-center px-6 py-3 rounded-xl 
                           bg-gradient-to-br from-green-500 to-green-600 
                           text-white transition-all duration-300 
                           hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/25 
@@ -878,7 +878,7 @@ const CategoryDetails = ({ params }) => {
                         </span>
                       </button>
                     )}
-                  </div>
+                  </>
                 )}
               </div>
             </div>
@@ -1084,14 +1084,14 @@ const CategoryDetails = ({ params }) => {
                                 Yaklaşan Taksit:
                               </div>
                               <div className="flex flex-col space-y-3">
-                                <div className="flex justify-between items-center">
-                                  <div>
+                                <div className="flex flex-col md:flex-row md:justify-between md:items-center">
+                                  <div className="flex flex-col md:flex-row md:items-center gap-2">
                                     <span className="text-gray-700 dark:text-gray-300">
                                       {getNextInstallment().date.toLocaleDateString(
                                         "tr-TR"
                                       )}
                                     </span>
-                                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">
                                       (
                                       {Math.ceil(
                                         (getNextInstallment().date -
@@ -1101,7 +1101,7 @@ const CategoryDetails = ({ params }) => {
                                       gün kaldı)
                                     </span>
                                   </div>
-                                  <span className="font-medium text-blue-600 dark:text-blue-400">
+                                  <span className="font-medium text-blue-600 dark:text-blue-400 mt-1 md:mt-0">
                                     {formatCurrency(
                                       installmentAmounts[
                                         getNextInstallment().index
@@ -1263,7 +1263,7 @@ const CategoryDetails = ({ params }) => {
                                       <img
                                         src={file.url}
                                         alt={file.name}
-                                        className="w-8 h-8 object-cover rounded"
+                                        className="w-8 h-8 object-cover rounded "
                                       />
                                     ) : (
                                       <MdInsertDriveFile className="w-8 h-8 text-gray-400" />
@@ -1565,14 +1565,14 @@ const CategoryDetails = ({ params }) => {
                   <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Taksit No:</span>
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-gray-900 dark:text-white">
                         {selectedInstallmentIndex !== null &&
                           selectedInstallmentIndex + 1}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Vade Tarihi:</span>
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-gray-900 dark:text-white">
                         {selectedInstallmentIndex !== null &&
                           installmentDates[
                             selectedInstallmentIndex
@@ -1581,7 +1581,7 @@ const CategoryDetails = ({ params }) => {
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Tutar:</span>
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-gray-900 dark:text-white">
                         {selectedInstallmentIndex !== null &&
                           formatCurrency(
                             installmentAmounts[selectedInstallmentIndex]
@@ -1621,10 +1621,10 @@ const CategoryDetails = ({ params }) => {
                           </svg>
                         </div>
                         <div className="flex-1 text-left">
-                          <h4 className="font-medium text-gray-900">
+                          <h4 className="font-medium text-gray-900 dark:text-white">
                             Makbuz İle Ödeme
                           </h4>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
                             Ödeme makbuzunu yükleyerek işlemi tamamlayın
                           </p>
                         </div>
@@ -1656,10 +1656,10 @@ const CategoryDetails = ({ params }) => {
                           </svg>
                         </div>
                         <div className="flex-1 text-left">
-                          <h4 className="font-medium text-gray-900">
+                          <h4 className="font-medium text-gray-900 dark:text-white">
                             Makbuzsuz Ödeme
                           </h4>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
                             Ödemeyi makbuz olmadan kaydedin
                           </p>
                         </div>

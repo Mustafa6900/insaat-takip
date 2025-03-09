@@ -41,7 +41,10 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         <meta name="theme-color" content="#000000" />
         <title>MYS - Müteahhit Yönetim Sistemi</title>
         <meta name="description" content="Müteahhit Yönetim Sistemi" />

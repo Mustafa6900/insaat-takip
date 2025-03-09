@@ -59,7 +59,7 @@ export default function Home() {
                   muted 
                   loop 
                   playsInline
-                  style={{ transform: 'scale(1.01)', playbackRate: 1.5 }}
+                  style={{ transform: 'scale(1.01)', playbackRate: 2 }}
                 >
                   <source src="/video/kilavuz.mp4" type="video/mp4" />
                   Tarayıcınız video oynatmayı desteklemiyor.

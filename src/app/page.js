@@ -3,10 +3,13 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { UserAuth } from './context/AuthContext';
+import { useTheme } from 'next-themes';
+import { MdPlayArrow, MdDevices, MdBusiness, MdCode, MdFactory, MdCampaign } from 'react-icons/md';
 
 export default function Home() {
-  const { user } = UserAuth();
+  const { user, googleSignIn } = UserAuth();
   const router = useRouter();
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (user) {
@@ -14,56 +17,177 @@ export default function Home() {
     }
   }, [user, router]);
 
+  useEffect(() => {
+    const video = document.querySelector('video');
+    if (video) {
+      video.playbackRate = 1.5; // Videoyu 1.5x hızda oynat
+    }
+  }, []);
+
   if (user) {
-    return null; // Kullanıcı varsa yönlendirildiği için herhangi bir içerik render edilmez
+    return null;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-t from-gray-50 to-gray-200 flex flex-col items-center justify-center relative overflow-hidden ">
-      <main className="container flex-grow flex flex-col items-center z-10 p-4 sm:p-1 sm:py-8 lg:py-12 lg:px-12">
-        <section className="text-center mb-8 w-full">
-          <h2 className="lg:text-2xl font-extrabold text-white mb-4 animate-fadeInDown text-zinc-700 sm:text-lg">İş Takip Sistemi Nedir?</h2>
-          <p className="text-white font-extrabold lg:text-base max-w-full mx-auto animate-fadeInUp text-zinc-500 sm:text-xs">
-            İş takip sistemi, çeşitli sektörlerde projelerin ve görevlerin yönetimini ve takibini kolaylaştıran bir platformdur. Bu sistem, projeleri ve bu projeler altında oluşturulan iş kalemlerini ayrıntılı bir şekilde yönetmenize olanak tanır. Her iş kalemi için isim, telefon numarası, detay dosyaları, başlangıç ve bitiş tarihleri, toplam iş ücreti, yapılan ödemeler, ödeme taksitleri ve tarihleri, makbuz dosyaları gibi bilgileri ekleyebilirsiniz. Bu sayede projelerinizin her aşamasını ayrıntılı olarak izleyebilir ve yönetebilirsiniz.
-          </p>
-        </section>
-        <section className="text-center mb-8 w-full">
-          <h2 className="lg:text-2xl font-extrabold text-white mb-4 animate-fadeInDown text-zinc-700 sm:text-lg">Özellikler</h2>
-          <ul className="text-white font-extrabold lg:text-base list-inside animate-fadeInUp text-zinc-500 sm:text-xs">
-            <li>Projeleri yönetme ve izleme</li>
-            <li>İş kalemleri oluşturma ve detaylandırma</li>
-            <li>PDF, fotoğraf ve AutoCAD dosyaları ekleme</li>
-            <li>Bildiriler ve bildirimler</li>  
-          </ul>
-        </section>
-        <section className="text-center mb-8 w-full">
-          <h2 className="lg:text-2xl font-extrabold text-white mb-4 animate-fadeInDown text-zinc-700 sm:text-lg">Kullanım Kılavuzu</h2>
-          <div className="video-container">
-            <video className="w-full max-w-4xl mx-auto" controls>
-              <source src="/video/kilavuz.mp4" type="video/mp4" />
-              Tarayıcınız video etiketini desteklemiyor.
-            </video>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-br pt-14 shadow-lg from-indigo-600 via-blue-700 to-blue-800 dark:from-indigo-700 dark:via-blue-800 dark:to-blue-900">
+        <div className="absolute inset-0 bg-grid-white/[0.2] bg-[size:16px_16px]" />
+        <div className="relative container mx-auto px-6 py-16 flex flex-col lg:flex-row items-center">
+          <div className="lg:w-1/2 text-left lg:pr-12">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 animate-fadeInDown">
+              İnşaat Projelerinizi Profesyonelce Yönetin
+            </h1>
+            <p className="text-lg text-blue-50 mb-8 animate-fadeInUp">
+              Hakediş takibinden şantiye yönetimine, maliyet kontrolünden iş programına kadar tüm inşaat süreçlerinizi tek platformda yönetin. Türkiye'nin önde gelen müteahhitleri tarafından tercih edilen yazılım çözümü.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <button 
+                onClick={googleSignIn}
+                className="flex items-center gap-2 bg-white text-blue-700 px-8 py-3 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+              >
+               Ücretsiz Deneyin
+              </button>
+            </div>
+          </div>  
+          <div className="lg:w-1/2 mt-12 lg:mt-0">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+              <div className="aspect-video rounded-lg shadow-2xl overflow-hidden">
+                <video 
+                  className="w-full h-full object-cover"
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline
+                  style={{ transform: 'scale(1.01)', playbackRate: 1.5 }}
+                >
+                  <source src="/video/kilavuz.mp4" type="video/mp4" />
+                  Tarayıcınız video oynatmayı desteklemiyor.
+                </video>
+              </div>
+            </div>
           </div>
-        </section> 
-        <section className="text-center mb-8 w-full">
-          <h2 className="lg:text-2xl font-extrabold text-white mb-4 animate-fadeInDown text-zinc-700 sm:text-lg">İndirilebilir Uygulama</h2>
-          <p className="text-white font-extrabold lg:text-base max-w-full mx-auto animate-fadeInUp text-zinc-500 sm:text-xs">
-            İş takip sistemimizi mobil cihazlarınıza indirerek daha hızlı ve kolay bir şekilde kullanabilirsiniz. Hem iOS hem de Android cihazlar için uyumlu uygulamamızla projelerinizi her yerden yönetmenin keyfini çıkarın.
-          </p>
+        </div>
+      </div>
+
+      <main className="flex-grow container mx-auto px-6 py-12">
+        {/* Özellikler */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+            İnşaat Yönetiminde Öne Çıkan Özellikler
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: <MdPlayArrow className="w-6 h-6" />,
+                title: "Hakediş Takibi",
+                description: "Hakediş süreçlerinizi otomatikleştirin ve ödemeleri takip edin"
+              },
+              {
+                icon: <MdDevices className="w-6 h-6" />,
+                title: "Şantiye Yönetimi",
+                description: "Saha operasyonlarını mobil cihazlardan anlık takip edin"
+              },
+              {
+                icon: <MdBusiness className="w-6 h-6" />,
+                title: "Maliyet Kontrolü",
+                description: "Bütçe planlaması ve gerçek zamanlı maliyet analizi"
+              },
+              {
+                icon: <MdFactory className="w-6 h-6" />,
+                title: "İş Programı",
+                description: "Detaylı iş programı ve süreç takibi yönetimi"
+              }
+            ].map((feature, index) => (
+              <div 
+                key={index}
+                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
+              >
+                <div className="text-blue-500 dark:text-blue-400 mb-4">
+                  {feature.icon}
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
         </section>
-        <section className="text-center mb-8 w-full">
-          <h2 className="lg:text-2xl font-extrabold text-white mb-4 animate-fadeInDown text-zinc-700 sm:text-lg">Kullanım Alanları</h2>
-          <div className="text-white font-extrabold lg:text-base max-w-full mx-auto animate-fadeInUp space-y-4 text-zinc-500 sm:text-xs">
-            <p><strong className='text-zinc-700'>İnşaat Sektörü:</strong> Bir müteahhit, iş takip sistemi ile inşaat projelerindeki tüm iş kalemlerini yönetebilir. Örneğin, fayans döşeme işi için iş kalemi oluşturabilir, işin adını, sorumlu kişinin telefon numarasını, başlangıç ve bitiş tarihlerini, toplam ücreti ve ödeme bilgilerini sistemde takip edebilir. Ayrıca, makbuzları ve diğer önemli dosyaları ekleyerek her aşamayı kontrol altında tutabilir.</p>
-            <p><strong className='text-zinc-700'>Yazılım Geliştirme:</strong> Yazılım geliştirme projelerinde, her bir görev için iş kalemleri oluşturulabilir. Geliştiriciler, testçiler ve proje yöneticileri için görevler atanabilir, başlangıç ve bitiş tarihleri belirlenebilir ve görev detayları takip edilebilir. İlgili kod dosyaları ve teknik dokümanlar sisteme eklenebilir.</p>
-            <p><strong className='text-zinc-700'>Üretim ve İmalat:</strong> Üretim hattındaki görevlerin yönetimi iş takip sistemi ile daha kolay hale gelir. Her bir üretim süreci için iş kalemleri oluşturulabilir, makinelerin bakım tarihleri ve sorumlu personelin iletişim bilgileri eklenebilir. Üretim planları ve kalite kontrol raporları sistemde saklanabilir.</p>
-            <p><strong className='text-zinc-700'>Pazarlama ve Satış:</strong> Pazarlama kampanyaları ve satış süreçleri için iş kalemleri oluşturulabilir. Kampanya detayları, sorumlu kişilerin iletişim bilgileri, başlangıç ve bitiş tarihleri, bütçe ve harcamalar izlenebilir. İlgili pazarlama materyalleri ve raporlar sisteme eklenebilir.</p>
+
+        {/* İnşaat Çözümleri */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+            Kapsamlı İnşaat Çözümleri
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              {
+                icon: <MdBusiness className="w-8 h-8" />,
+                title: "Konut Projeleri",
+                description: "Konut projelerinizin tüm süreçlerini detaylı olarak yönetin. Daire satışlarından şantiye yönetimine kadar her aşamayı kontrol edin."
+              },
+              {
+                icon: <MdFactory className="w-8 h-8" />,
+                title: "Ticari İnşaatlar",
+                description: "AVM, ofis ve endüstriyel yapı projelerinizi profesyonel araçlarla yönetin. Kiralama ve satış süreçlerini takip edin."
+              },
+              {
+                icon: <MdCode className="w-8 h-8" />,
+                title: "Altyapı Projeleri",
+                description: "Yol, köprü ve altyapı projelerinizin iş programını oluşturun. İş makinesi ve ekipman yönetimini optimize edin."
+              },
+              {
+                icon: <MdCampaign className="w-8 h-8" />,
+                title: "Restorasyon Projeleri",
+                description: "Tarihi yapı restorasyonlarında hassas süreç yönetimi. Özel malzeme takibi ve uzman ekip koordinasyonu."
+              }
+            ].map((sector, index) => (
+              <div 
+                key={index}
+                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
+              >
+                <div className="text-blue-500 dark:text-blue-400 mb-4">
+                  {sector.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                  {sector.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {sector.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Mobil Uygulama */}
+        <section className="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-xl p-8 text-center">
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Mobil Uygulamamızı İndirin
+          </h2>
+          <p className="text-blue-50 mb-6 max-w-2xl mx-auto">
+            İş takip sistemimizi iOS ve Android cihazlarınıza indirerek her yerden erişim sağlayın. Bildirimler sayesinde önemli güncellemelerden anında haberdar olun.
+          </p>
+          <div className="flex justify-center gap-4">
+            <button className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+              App Store
+            </button>
+            <button className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+              Google Play
+            </button>
           </div>
         </section>
       </main>
 
-      <footer className="p-4 text-center z-10">
-        <p className="text-gray-600 sm:text-xs sm:font-extrabold sm:text-gray-800 lg:text-base ">&copy; 2024 İş Takip Sistemi. Tüm hakları saklıdır.</p>
+      <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8">
+        <div className="container mx-auto px-6 text-center">
+          <p className="text-gray-600 dark:text-gray-400">
+            &copy; 2024 İş Takip Sistemi. Tüm hakları saklıdır.
+          </p>
+        </div>
       </footer>
     </div>
   );

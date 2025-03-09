@@ -738,17 +738,32 @@ const Header = () => {
           <nav>
             <ul className="flex items-center space-x-4">
               {loading ? null : !user ? (
-                <li>
-                  <button
-                    onClick={handleSignIn}
-                    className="flex items-center gap-2 py-2 px-4 bg-white border-2 border-gray-200 
+                <>
+                  <li>
+                    <button
+                      onClick={handleSignIn}
+                      className="flex items-center gap-2 py-2 px-4 bg-white border-2 border-gray-200 
                     hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-lg 
                     transition-all duration-200 shadow-sm"
-                  >
-                    <img src="/google.svg" alt="Google" className="w-5 h-5" />
-                    Google ile Giriş Yap
-                  </button>
-                </li>
+                    >
+                      <img src="/google.svg" alt="Google" className="w-5 h-5" />
+                      Google ile Giriş Yap
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={toggleTheme}
+                      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      aria-label="Tema Değiştir"
+                    >
+                      {theme === "light" ? (
+                        <MdDarkMode className="h-6 w-6 text-gray-700 dark:text-gray-200" />
+                      ) : (
+                        <MdLightMode className="h-6 w-6 text-gray-200" />
+                      )}
+                    </button>
+                  </li>
+                </>
               ) : (
                 <>
                   <li className="relative">

@@ -20,3 +20,6 @@ globs:
 -Implement role-based access control (RBAC) to ensure users have appropriate permissions.
 -Use Markdown for structured documentation but keep flexibility for UI text formatting.
 -Avoid unnecessary complexity; prioritize usability and efficiency in workflows.
+onsider 320px to 768px as the mobile breakpoint and ensure all responsive designs are optimized accordingly.
+Responsive design must not compromise the desktop layout; ensure mobile optimizations do not affect desktop usability.
+-Use Tailwind CSS for styling and ensure all responsive designs are optimized accordingly.

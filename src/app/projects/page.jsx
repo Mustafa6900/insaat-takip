@@ -333,8 +333,8 @@ const Projects = () => {
         <main className="pt-24 px-6 pb-6">
           <div className="max-w-[2000px] mx-auto">
             {/* Content Header */}
-            <div className="flex justify-between items-center mb-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-              <div>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+              <div className="w-full md:w-auto mb-4 md:mb-0">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Projelerim
                 </h2>
@@ -344,7 +344,7 @@ const Projects = () => {
               </div>
               <button
                 onClick={handleOpenModal}
-                className="group inline-flex items-center px-6 py-3 rounded-xl 
+                className="w-full md:w-auto group inline-flex items-center justify-center px-6 py-3 rounded-xl 
                 bg-gradient-to-br from-blue-500 to-blue-600 
                 text-white transition-all duration-300 
                 hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/25 
@@ -361,10 +361,11 @@ const Projects = () => {
             <div
               className={`
                 grid gap-6
+                grid-cols-1
                 ${
                   isSidebarOpen
-                    ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                    : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+                    ? "md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                    : "md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
                 }
               `}
             >

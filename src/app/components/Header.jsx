@@ -801,9 +801,13 @@ const Header = () => {
                   <li className="relative">
                     <button
                       onClick={() => setShowDropdown(!showDropdown)}
-                      className="relative p-1.5 md:p-2 rounded-lg hover:bg-gray-100 transition-colors group"
+                      className="relative p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 
+                        transition-colors group"
                     >
-                      <MdNotificationsNone className="h-5 w-5 md:h-6 md:w-6 text-gray-700" />
+                      <MdNotificationsNone
+                        className="h-5 w-5 md:h-6 md:w-6 text-gray-700 dark:text-gray-200 
+                        group-hover:text-gray-900 dark:group-hover:text-white"
+                      />
                       {!notificationsEnabled && (
                         <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full">
                           <span className="sr-only">
@@ -812,7 +816,10 @@ const Header = () => {
                         </div>
                       )}
                       {unreadCount > 0 && (
-                        <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                        <span
+                          className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 
+                          bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full"
+                        >
                           {unreadCount}
                         </span>
                       )}
@@ -820,34 +827,36 @@ const Header = () => {
                     {showDropdown && (
                       <div
                         ref={dropdownRef}
-                        className="absolute right-0 mt-2 w-[280px] md:w-80 bg-white rounded-md shadow-lg 
-                        overflow-hidden z-20 transition-all duration-300 transform origin-top-right"
+                        className="absolute right-0 mt-2 w-[280px] md:w-80 bg-white dark:bg-gray-900 rounded-md 
+                        shadow-lg border border-gray-200 dark:border-gray-700
+                        overflow-hidden z-20 transition-all duration-300 transform origin-top-right left-1/2 -translate-x-1/2 top-9 md:right-0 md:left-auto md:translate-x-0 md:top-10"
                       >
                         <div className="py-2">
-                          <div className="px-4 py-2 border-b border-gray-200 flex justify-between items-center">
-                            <h3 className="font-semibold text-gray-900">
+                          <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                            <h3 className="font-semibold text-gray-900 dark:text-gray-100">
                               Bildirimler
                             </h3>
                             {unreadCount > 0 && (
-                              <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                              <span className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100 text-xs font-medium px-2.5 py-0.5 rounded-full">
                                 {unreadCount} yeni
                               </span>
                             )}
                           </div>
-                          <div className="max-h-96 overflow-y-auto">
+                          <div className="max-h-[calc(100vh-200px)] md:max-h-96 overflow-y-auto">
                             {notifications.length === 0 ? (
-                              <div className="px-4 py-2 text-gray-700">
+                              <div className="px-4 py-2 text-gray-700 dark:text-gray-300">
                                 Henüz bildirim yok.
                               </div>
                             ) : (
                               notifications.map((notification) => (
                                 <div
                                   key={notification.id}
-                                  className={`px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100
+                                  className={`px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer 
+                                    border-b border-gray-100 dark:border-gray-700
                                     ${
                                       notification.read
-                                        ? "bg-white"
-                                        : "bg-blue-50"
+                                        ? "bg-white dark:bg-gray-900"
+                                        : "bg-blue-50 dark:bg-blue-900/30"
                                     }`}
                                   onClick={() =>
                                     handleNotificationClick(notification)
@@ -855,20 +864,20 @@ const Header = () => {
                                 >
                                   <div className="flex justify-between items-start">
                                     <div>
-                                      <p className="font-semibold text-gray-900">
+                                      <p className="font-semibold text-gray-900 dark:text-gray-100">
                                         {notification.title}
                                       </p>
-                                      <p className="text-sm text-gray-600 mt-1">
+                                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                                         {notification.body}
                                       </p>
-                                      <p className="text-xs text-gray-500 mt-1">
+                                      <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
                                         {new Date(
                                           notification.createdAt.toDate()
                                         ).toLocaleString("tr-TR")}
                                       </p>
                                     </div>
                                     {!notification.read && (
-                                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                                      <div className="w-2 h-2 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
                                     )}
                                   </div>
                                 </div>
@@ -876,10 +885,11 @@ const Header = () => {
                             )}
                           </div>
                           {!notificationsEnabled && (
-                            <div className="px-4 py-2 border-b border-gray-200">
+                            <div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700">
                               <button
                                 onClick={requestNotificationPermission}
-                                className="w-full text-left text-sm text-blue-600 hover:text-blue-800"
+                                className="w-full text-left text-sm text-blue-600 dark:text-blue-400 
+                                  hover:text-blue-800 dark:hover:text-blue-300"
                               >
                                 Bildirimleri etkinleştir
                               </button>
@@ -935,13 +945,20 @@ const Header = () => {
                   <li>
                     <button
                       onClick={toggleTheme}
-                      className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 
+                        transition-colors group"
                       aria-label="Tema Değiştir"
                     >
                       {theme === "light" ? (
-                        <MdDarkMode className="h-5 w-5 md:h-6 md:w-6 text-gray-700 dark:text-gray-200" />
+                        <MdDarkMode
+                          className="h-5 w-5 md:h-6 md:w-6 text-gray-700 dark:text-gray-200 
+                          group-hover:text-gray-900 dark:group-hover:text-white"
+                        />
                       ) : (
-                        <MdLightMode className="h-5 w-5 md:h-6 md:w-6 text-gray-200" />
+                        <MdLightMode
+                          className="h-5 w-5 md:h-6 md:w-6 text-gray-200 
+                          group-hover:text-white"
+                        />
                       )}
                     </button>
                   </li>

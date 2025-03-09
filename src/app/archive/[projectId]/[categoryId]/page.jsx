@@ -191,12 +191,12 @@ const ArchivedCategoryDetails = ({ params }) => {
         isSidebarOpen ? "pl-64" : "pl-20"
       }`}
     >
-      <main className="pt-24 px-6 pb-6">
+      <main className="pt-24 px-6 pb-6 md:pt-20 sm:pt-20 sm:px-3">
         <div className="max-w-[2000px] mx-auto">
           {/* Header - Export butonu eklendi */}
-          <div className="flex justify-between items-center mb-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="flex flex-col sm:flex-col md:flex-row justify-between items-start md:items-center mb-8 bg-white dark:bg-gray-800 p-6 sm:p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="mb-4 sm:mb-4 md:mb-0">
+              <h2 className="text-2xl sm:text-xl font-bold text-gray-900 dark:text-white">
                 {categoryData.name}
               </h2>
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -205,7 +205,7 @@ const ArchivedCategoryDetails = ({ params }) => {
             </div>
             <button
               onClick={handleExportToExcel}
-              className="group inline-flex items-center px-6 py-3 rounded-xl 
+              className="group w-full sm:w-full md:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl 
                 bg-gradient-to-br from-green-500 to-green-600 
                 text-white transition-all duration-300 
                 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/25 
@@ -220,13 +220,13 @@ const ArchivedCategoryDetails = ({ params }) => {
 
           <div className="space-y-8">
             {/* Temel Bilgiler */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-4">
               <h3 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white">
                 Temel Bilgiler
               </h3>
               <div className="space-y-6">
                 {/* Firma Bilgileri */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-4">
                   <div>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                       Firma Adı
@@ -275,11 +275,11 @@ const ArchivedCategoryDetails = ({ params }) => {
                     <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
                       Proje Dosyaları
                     </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-3">
                       {categoryData.files.map((file, index) => (
                         <div
                           key={index}
-                          className="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg group hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-gray-800"
+                          className="flex items-center p-3 sm:p-2 border border-gray-200 dark:border-gray-700 rounded-lg group hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-gray-800"
                         >
                           <div
                             className="flex-1 min-w-0 cursor-pointer"
@@ -325,12 +325,12 @@ const ArchivedCategoryDetails = ({ params }) => {
             </div>
 
             {/* Ödeme Bilgileri */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-4">
               <h3 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white">
                 Ödeme Bilgileri
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-4">
+                <div className="sm:mb-2">
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     Toplam İş Ücreti
                   </p>
@@ -338,7 +338,7 @@ const ArchivedCategoryDetails = ({ params }) => {
                     {formatCurrency(categoryData.totalJobCost)}
                   </p>
                 </div>
-                <div>
+                <div className="sm:mb-2">
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     Başlangıç Ödemesi
                   </p>
@@ -346,7 +346,7 @@ const ArchivedCategoryDetails = ({ params }) => {
                     {formatCurrency(categoryData.paymentMade)}
                   </p>
                 </div>
-                <div>
+                <div className="sm:mb-2">
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     Kalan Tutar
                   </p>
@@ -362,101 +362,105 @@ const ArchivedCategoryDetails = ({ params }) => {
                   <h4 className="text-md font-semibold mb-4 text-gray-900 dark:text-white">
                     Taksit Planı
                   </h4>
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="bg-gray-50 dark:bg-gray-700">
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Taksit No
-                          </th>
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Tarih
-                          </th>
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Tutar
-                          </th>
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Durum
-                          </th>
-                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
-                            Makbuz
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                        {categoryData.installmentDates?.map((date, index) => (
-                          <tr
-                            key={index}
-                            className="border-t border-gray-200 dark:border-gray-700"
-                          >
-                            <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                              {index + 1}
-                            </td>
-                            <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                              {new Date(date).toLocaleDateString("tr-TR")}
-                            </td>
-                            <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                              {formatCurrency(
-                                categoryData.installmentAmounts?.[index]
-                              )}
-                            </td>
-                            <td className="px-4 py-3 text-sm">
-                              <span
-                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                  categoryData.installmentStatus?.[index]
-                                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                                    : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                                }`}
-                              >
-                                {categoryData.installmentStatus?.[index]
-                                  ? "Ödendi"
-                                  : "Ödenmedi"}
-                              </span>
-                            </td>
-                            <td className="px-4 py-3 text-sm">
-                              {categoryData.receipts?.[index] && (
-                                <button
-                                  onClick={() => {
-                                    setPreviewFile(
-                                      categoryData.receipts[index]
-                                    );
-                                    setIsPreviewModalOpen(true);
-                                  }}
-                                  className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-                                >
-                                  {categoryData.receipts[index].url.match(
-                                    /\.(jpg|jpeg|png|gif|webp)$/i
-                                  ) ? (
-                                    <img
-                                      src={categoryData.receipts[index].url}
-                                      alt="Makbuz"
-                                      className="w-10 h-10 object-cover rounded"
-                                    />
-                                  ) : (
-                                    <div className="p-2 bg-blue-50 dark:bg-blue-900 rounded">
-                                      <svg
-                                        className="w-6 h-6 text-blue-500 dark:text-blue-400"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                        />
-                                      </svg>
-                                    </div>
-                                  )}
-                                  <span className="text-sm">Görüntüle</span>
-                                </button>
-                              )}
-                            </td>
+                  <div className="overflow-x-auto -mx-4 sm:-mx-4">
+                    <div className="inline-block min-w-full sm:px-4 align-middle">
+                      <table className="min-w-full">
+                        <thead>
+                          <tr className="bg-gray-50 dark:bg-gray-700">
+                            <th className="px-4 py-3 sm:px-2 sm:py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
+                              Taksit No
+                            </th>
+                            <th className="px-4 py-3 sm:px-2 sm:py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
+                              Tarih
+                            </th>
+                            <th className="px-4 py-3 sm:px-2 sm:py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
+                              Tutar
+                            </th>
+                            <th className="px-4 py-3 sm:px-2 sm:py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
+                              Durum
+                            </th>
+                            <th className="px-4 py-3 sm:px-2 sm:py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
+                              Makbuz
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                          {categoryData.installmentDates?.map((date, index) => (
+                            <tr
+                              key={index}
+                              className="border-t border-gray-200 dark:border-gray-700"
+                            >
+                              <td className="px-4 py-3 sm:px-2 sm:py-2 text-sm text-gray-900 dark:text-white">
+                                {index + 1}
+                              </td>
+                              <td className="px-4 py-3 sm:px-2 sm:py-2 text-sm text-gray-900 dark:text-white">
+                                {new Date(date).toLocaleDateString("tr-TR")}
+                              </td>
+                              <td className="px-4 py-3 sm:px-2 sm:py-2 text-sm text-gray-900 dark:text-white">
+                                {formatCurrency(
+                                  categoryData.installmentAmounts?.[index]
+                                )}
+                              </td>
+                              <td className="px-4 py-3 sm:px-2 sm:py-2 text-sm">
+                                <span
+                                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                    categoryData.installmentStatus?.[index]
+                                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                                      : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                                  }`}
+                                >
+                                  {categoryData.installmentStatus?.[index]
+                                    ? "Ödendi"
+                                    : "Ödenmedi"}
+                                </span>
+                              </td>
+                              <td className="px-4 py-3 sm:px-2 sm:py-2 text-sm">
+                                {categoryData.receipts?.[index] && (
+                                  <button
+                                    onClick={() => {
+                                      setPreviewFile(
+                                        categoryData.receipts[index]
+                                      );
+                                      setIsPreviewModalOpen(true);
+                                    }}
+                                    className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                                  >
+                                    {categoryData.receipts[index].url.match(
+                                      /\.(jpg|jpeg|png|gif|webp)$/i
+                                    ) ? (
+                                      <img
+                                        src={categoryData.receipts[index].url}
+                                        alt="Makbuz"
+                                        className="w-10 h-10 sm:w-8 sm:h-8 object-cover rounded"
+                                      />
+                                    ) : (
+                                      <div className="p-2 sm:p-1 bg-blue-50 dark:bg-blue-900 rounded">
+                                        <svg
+                                          className="w-6 h-6 sm:w-5 sm:h-5 text-blue-500 dark:text-blue-400"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                          />
+                                        </svg>
+                                      </div>
+                                    )}
+                                    <span className="text-sm sm:text-xs">
+                                      Görüntüle
+                                    </span>
+                                  </button>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               )}
@@ -468,7 +472,7 @@ const ArchivedCategoryDetails = ({ params }) => {
       {/* Resim Önizleme Modalı */}
       {isPreviewModalOpen && previewFile && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="relative w-full max-w-4xl mx-4">
+          <div className="relative w-full max-w-4xl mx-4 sm:mx-2">
             <button
               onClick={() => {
                 setIsPreviewModalOpen(false);
@@ -485,8 +489,8 @@ const ArchivedCategoryDetails = ({ params }) => {
                 alt={previewFile.name}
                 className="w-full h-auto max-h-[80vh] object-contain"
               />
-              <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
+              <div className="p-4 sm:p-3 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <p className="text-sm font-medium text-gray-900 dark:text-white truncate sm:max-w-[60%]">
                   {previewFile.name}
                 </p>
                 <button

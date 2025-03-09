@@ -128,8 +128,8 @@ const Archive = () => {
             <div
               className={`grid gap-6 ${
                 isSidebarOpen
-                  ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                  : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+                  ? "grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                  : "grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
               }`}
             >
               {archivedProjects.map((project) => (
@@ -179,7 +179,7 @@ const Archive = () => {
                               : "text-white/80"
                           }`}
                         >
-                          Arşivlenme:{" "}
+                          Arşivlenme: <br />
                           {new Date(project.archivedAt).toLocaleDateString(
                             "tr-TR"
                           )}
@@ -188,7 +188,7 @@ const Archive = () => {
 
                       <div className="flex items-center justify-between mt-4">
                         <span
-                          className={`text-sm font-medium px-3 py-1 rounded-full
+                          className={`text-xs md:text-sm font-medium px-3 py-1 rounded-full
                           ${
                             project.gradient?.includes("from-blue-50") ||
                             project.gradient === defaultTheme.class
@@ -199,7 +199,7 @@ const Archive = () => {
                           Projeyi Görüntüle
                         </span>
                         <span
-                          className={`p-2 rounded-full backdrop-blur-sm
+                          className={`text-xs md:text-sm p-2 rounded-full backdrop-blur-sm
                           ${
                             project.gradient?.includes("from-blue-50") ||
                             project.gradient === defaultTheme.class
@@ -213,7 +213,11 @@ const Archive = () => {
                     </div>
                   </Link>
 
-                  <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-all duration-200">
+                  <div
+                    className="absolute top-3 right-3 flex flex-col space-y-2 
+                    md:opacity-0 md:group-hover:opacity-100 opacity-100 
+                    transition-all duration-200"
+                  >
                     <button
                       onClick={(e) => {
                         e.preventDefault();

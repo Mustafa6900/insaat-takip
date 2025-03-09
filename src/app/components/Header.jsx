@@ -736,31 +736,25 @@ const Header = () => {
             )}
           </h1>
           <nav>
-            <ul className="flex items-center space-x-4">
+            <ul className="flex items-center space-x-2 md:space-x-4">
               {loading ? null : !user ? (
                 <>
                   <li>
                     <button
                       onClick={handleSignIn}
-                      className="flex items-center gap-2 py-2 px-4 bg-white border-2 border-gray-200 
-                    hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-lg 
-                    transition-all duration-200 shadow-sm"
+                      className="flex items-center gap-2 py-2 px-3 md:px-4 bg-white border-2 border-gray-200 
+                      hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-lg 
+                      transition-all duration-200 shadow-sm text-sm md:text-base"
                     >
-                      <img src="/google.svg" alt="Google" className="w-5 h-5" />
-                      Google ile Giriş Yap
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      onClick={toggleTheme}
-                      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                      aria-label="Tema Değiştir"
-                    >
-                      {theme === "light" ? (
-                        <MdDarkMode className="h-6 w-6 text-gray-700 dark:text-gray-200" />
-                      ) : (
-                        <MdLightMode className="h-6 w-6 text-gray-200" />
-                      )}
+                      <img
+                        src="/google.svg"
+                        alt="Google"
+                        className="w-4 h-4 md:w-5 md:h-5"
+                      />
+                      <span className="hidden lg:inline">
+                        Google ile Giriş Yap
+                      </span>
+                      <span className="lg:hidden">Giriş</span>
                     </button>
                   </li>
                 </>
@@ -769,9 +763,9 @@ const Header = () => {
                   <li className="relative">
                     <button
                       onClick={() => setShowDropdown(!showDropdown)}
-                      className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors group"
+                      className="relative p-1.5 md:p-2 rounded-lg hover:bg-gray-100 transition-colors group"
                     >
-                      <MdNotificationsNone className="h-6 w-6 text-gray-700" />
+                      <MdNotificationsNone className="h-5 w-5 md:h-6 md:w-6 text-gray-700" />
                       {!notificationsEnabled && (
                         <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full">
                           <span className="sr-only">
@@ -788,7 +782,7 @@ const Header = () => {
                     {showDropdown && (
                       <div
                         ref={dropdownRef}
-                        className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg 
+                        className="absolute right-0 mt-2 w-[280px] md:w-80 bg-white rounded-md shadow-lg 
                         overflow-hidden z-20 transition-all duration-300 transform origin-top-right"
                       >
                         <div className="py-2">
@@ -857,28 +851,35 @@ const Header = () => {
                       </div>
                     )}
                   </li>
-                  <div className="h-6 w-px bg-gray-200 mx-2" />
-                  <li className="hidden sm:block">
-                    <div className="flex items-center gap-3">
+                  <div className="h-6 w-px bg-gray-200 mx-1 md:mx-2" />
+                  <li className="hidden lg:block">
+                    <div className="flex items-center gap-2 md:gap-3">
                       <img
                         src={user.photoURL}
                         alt={user.displayName}
-                        className="w-8 h-8 rounded-full border-2 border-gray-200"
+                        className="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-gray-200"
                       />
-                      <span className="text-gray-700 font-medium">
+                      <span className="text-gray-700 font-medium text-sm md:text-base max-w-[120px] md:max-w-none truncate">
                         {user.displayName}
                       </span>
                     </div>
                   </li>
+                  <li className="lg:hidden pl-2 md:pl-0">
+                    <img
+                      src={user.photoURL}
+                      alt={user.displayName}
+                      className="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-gray-200"
+                    />
+                  </li>
                   <li>
                     <button
                       onClick={handleSignOut}
-                      className="flex items-center gap-2 py-2 px-4 text-gray-700 hover:text-red-600 
-                      font-medium rounded-lg transition-all duration-200 hover:bg-red-50 border-2 
-                      border-transparent hover:border-red-100"
+                      className="flex items-center gap-1 md:gap-2 py-1.5 md:py-2 px-2 md:px-4 text-gray-700 
+                      hover:text-red-600 font-medium rounded-lg transition-all duration-200 
+                      hover:bg-red-50 border-2 border-transparent hover:border-red-100 text-sm md:text-base"
                     >
                       <svg
-                        className="w-5 h-5"
+                        className="w-4 h-4 md:w-5 md:h-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -890,19 +891,19 @@ const Header = () => {
                           d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                         />
                       </svg>
-                      Çıkış Yap
+                      <span className="hidden lg:inline">Çıkış Yap</span>
                     </button>
                   </li>
                   <li>
                     <button
                       onClick={toggleTheme}
-                      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                       aria-label="Tema Değiştir"
                     >
                       {theme === "light" ? (
-                        <MdDarkMode className="h-6 w-6 text-gray-700 dark:text-gray-200" />
+                        <MdDarkMode className="h-5 w-5 md:h-6 md:w-6 text-gray-700 dark:text-gray-200" />
                       ) : (
-                        <MdLightMode className="h-6 w-6 text-gray-200" />
+                        <MdLightMode className="h-5 w-5 md:h-6 md:w-6 text-gray-200" />
                       )}
                     </button>
                   </li>

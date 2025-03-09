@@ -54,9 +54,9 @@ export default function RootLayout({ children }) {
         >
           <AuthContextProvider>
             <SidebarProvider>
-              <div className="flex min-h-screen bg-white dark:bg-gray-900">
+              <div className="flex min-h-screen bg-white dark:bg-gray-900 relative">
                 <Header />
-                <div className="flex-1 bg-gray-50 dark:bg-gray-900">
+                <div className="flex-1 bg-gray-50 dark:bg-gray-900 relative">
                   {children}
                 </div>
               </div>

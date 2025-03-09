@@ -55,6 +55,7 @@ const Header = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const { theme, setTheme } = useTheme();
+  const [showOverlay, setShowOverlay] = useState(false);
 
   const handleSignIn = async () => {
     try {
@@ -249,6 +250,30 @@ const Header = () => {
       setupNotifications();
     }
   }, [user]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        // md breakpoint
+        setSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // İlk yüklemede kontrol et
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleSidebarToggle = () => {
+    setSidebarOpen(!isSidebarOpen);
+    setShowOverlay(!isSidebarOpen);
+  };
+
+  const handleOverlayClick = () => {
+    setSidebarOpen(false);
+    setShowOverlay(false);
+  };
 
   const getPathIds = (path) => {
     const parts = path.split("/");
@@ -648,13 +673,23 @@ const Header = () => {
 
   return (
     <>
+      {/* Karanlık overlay */}
+      {showOverlay && (
+        <div
+          className="fixed inset-0 bg-black/50 z-10 md:hidden"
+          onClick={handleOverlayClick}
+        />
+      )}
+
       {user && (
         <aside
           className={`
             fixed left-0 top-0 h-full bg-white dark:bg-gray-900 
             border-r border-gray-200 dark:border-gray-700 shadow-sm
-            transition-all duration-300 ease-in-out z-20
+            transition-all duration-300 ease-in-out
             ${isSidebarOpen ? "w-64" : "w-20"}
+            ${isSidebarOpen ? "z-20" : "z-10"}
+            md:z-20
           `}
         >
           <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700">
@@ -668,13 +703,14 @@ const Header = () => {
                     isSidebarOpen
                       ? "opacity-100 w-auto"
                       : "opacity-0 w-0 overflow-hidden"
-                  }`}
+                  }
+                `}
               >
                 MYS
               </span>
             </div>
             <button
-              onClick={() => setSidebarOpen(!isSidebarOpen)}
+              onClick={handleSidebarToggle}
               className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
               {isSidebarOpen ? (
@@ -691,7 +727,9 @@ const Header = () => {
             </button>
           </div>
 
-          <div className="p-4">{renderSidebarContent()}</div>
+          <div className="p-4 overflow-y-auto h-[calc(100vh-4rem)]">
+            {renderSidebarContent()}
+          </div>
         </aside>
       )}
 

@@ -237,181 +237,190 @@ export default function TransactionList() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Filtre Seçenekleri */}
-      <div className="flex flex-wrap gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-        <select
-          value={filters.type}
-          onChange={(e) => setFilters({ ...filters, type: e.target.value })}
-          className="px-2 pl-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-            bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-        >
-          <option value="all">Tüm İşlemler</option>
-          <option value="income">Gelirler</option>
-          <option value="expense">Giderler</option>
-        </select>
+      <div className="bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col md:flex-row md:items-center gap-3 p-4">
+          <select
+            value={filters.type}
+            onChange={(e) => setFilters({ ...filters, type: e.target.value })}
+            className="w-full md:w-auto px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg
+              bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+          >
+            <option value="all">Tüm İşlemler</option>
+            <option value="income">Gelirler</option>
+            <option value="expense">Giderler</option>
+          </select>
 
-        <select
-          value={filters.dateRange}
-          onChange={(e) =>
-            setFilters({ ...filters, dateRange: e.target.value })
-          }
-          className="px-2 pl-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-            bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-        >
-          <option value="all">Tüm Tarihler</option>
-          <option value="today">Bugün</option>
-          <option value="week">Bu Hafta</option>
-          <option value="month">Bu Ay</option>
-        </select>
+          <select
+            value={filters.dateRange}
+            onChange={(e) =>
+              setFilters({ ...filters, dateRange: e.target.value })
+            }
+            className="w-full md:w-auto px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg
+              bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+          >
+            <option value="all">Tüm Tarihler</option>
+            <option value="today">Bugün</option>
+            <option value="week">Bu Hafta</option>
+            <option value="month">Bu Ay</option>
+          </select>
 
-        <select
-          value={filters.archived ? "archived" : "active"}
-          onChange={(e) =>
-            setFilters({ ...filters, archived: e.target.value === "archived" })
-          }
-          className="px-2 pl-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-            bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-        >
-          <option value="active">Aktif İşlemler</option>
-          <option value="archived">Arşivlenen İşlemler</option>
-        </select>
+          <select
+            value={filters.archived ? "archived" : "active"}
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                archived: e.target.value === "archived",
+              })
+            }
+            className="w-full md:w-auto px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg
+              bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+          >
+            <option value="active">Aktif İşlemler</option>
+            <option value="archived">Arşivlenen İşlemler</option>
+          </select>
+        </div>
       </div>
 
-      {/* İşlem Tablosu */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* İşlem Listesi */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+        {/* Mobil Görünümü (768px'e kadar) */}
+        <div className="block md:hidden">
+          {transactions.length === 0 ? (
+            <div className="text-center py-8 px-4">
+              <p className="text-gray-500 dark:text-gray-400">
+                Henüz işlem kaydı bulunmuyor
+              </p>
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-200 dark:divide-gray-700">
+              {transactions.map((transaction) => (
+                <div
+                  key={transaction.id}
+                  className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-sm text-gray-900 dark:text-white">
+                      {new Date(transaction.date).toLocaleDateString("tr-TR")}
+                    </span>
+                    <span
+                      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
+                        transaction.type === "income"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {transaction.type === "income" ? "Gelir" : "Gider"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      {transaction.category}
+                    </span>
+                    <span
+                      className={`text-sm font-medium ${
+                        transaction.type === "income"
+                          ? "text-green-600 dark:text-green-400"
+                          : "text-red-600 dark:text-red-400"
+                      }`}
+                    >
+                      {formatCurrency(transaction.amount)}
+                    </span>
+                  </div>
+                  <div className="flex justify-end mt-2">
+                    <button
+                      onClick={() => handleDelete(transaction)}
+                      className="text-red-600 hover:text-red-800 p-1"
+                    >
+                      <MdDelete className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Masaüstü Görünümü (768px ve üzeri) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead>
-              <tr className="bg-gray-50 dark:bg-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-700">
+              <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Tarih
+                  TARİH
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  İşlem Türü
+                  İŞLEM TÜRÜ
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Kategori
+                  KATEGORİ
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Açıklama
+                  TUTAR
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Tutar
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Ödeme Yöntemi
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Makbuz
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  İşlemler
+                  İŞLEMLER
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              {transactions.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan="8"
-                    className="px-6 py-4 text-center text-gray-500"
-                  >
-                    Henüz işlem kaydı bulunmuyor
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              {transactions.map((transaction) => (
+                <tr
+                  key={transaction.id}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {new Date(transaction.date).toLocaleDateString("tr-TR")}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        transaction.type === "income"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {transaction.type === "income" ? "Gelir" : "Gider"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {transaction.category}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <span
+                      className={
+                        transaction.type === "income"
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }
+                    >
+                      {formatCurrency(transaction.amount)}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => handleDelete(transaction)}
+                        className="text-red-600 hover:text-red-800"
+                        title="Sil"
+                      >
+                        <MdDelete className="w-5 h-5" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
-              ) : (
-                transactions.map((transaction) => (
-                  <tr
-                    key={transaction.id}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      {new Date(transaction.date).toLocaleDateString("tr-TR")}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          transaction.type === "income"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {transaction.type === "income" ? "Gelir" : "Gider"}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      {transaction.category}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                      {transaction.description || "-"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <span
-                        className={
-                          transaction.type === "income"
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
-                      >
-                        {formatCurrency(transaction.amount)}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      {
-                        {
-                          cash: "Nakit",
-                          bank: "Havale/EFT",
-                          check: "Çek",
-                          credit: "Kredi Kartı",
-                        }[transaction.paymentMethod]
-                      }
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      {transaction.files?.length > 0 ? (
-                        <button
-                          onClick={() =>
-                            handleReceiptPreview(transaction.files)
-                          }
-                          className="flex items-center text-blue-600 hover:text-blue-800"
-                        >
-                          <MdReceipt className="w-5 h-5 mr-1" />
-                          <span>Görüntüle ({transaction.files.length})</span>
-                        </button>
-                      ) : transaction.receiptUrl ? (
-                        <button
-                          onClick={() =>
-                            handleReceiptPreview({
-                              url: transaction.receiptUrl,
-                              name: transaction.receiptName || "Makbuz",
-                            })
-                          }
-                          className="flex items-center text-blue-600 hover:text-blue-800"
-                        >
-                          <MdReceipt className="w-5 h-5 mr-1" />
-                          <span>Görüntüle</span>
-                        </button>
-                      ) : (
-                        "-"
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => handleDelete(transaction)}
-                          className="text-red-600 hover:text-red-800"
-                          title="Sil"
-                        >
-                          <MdDelete className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
+              ))}
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Sayfalama */}
+      <div className="flex justify-between items-center px-4">
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          Toplam {transactions.length} işlem gösteriliyor
+        </p>
       </div>
 
       {/* Silme/Arşivleme Onay Modalı */}
@@ -441,31 +450,67 @@ export default function TransactionList() {
 
             <div className="bg-white rounded-lg overflow-hidden">
               <div className="max-h-[80vh] overflow-y-auto p-4">
-                {previewReceipt.map((file, index) => (
-                  <div key={index} className="mb-6 last:mb-0">
+                {Array.isArray(previewReceipt) ? (
+                  previewReceipt.map((file, index) => (
+                    <div key={index} className="mb-6 last:mb-0">
+                      <div className="bg-gray-50 p-2 mb-2 rounded-lg">
+                        <h3 className="text-sm font-medium text-gray-900">
+                          {file.name}
+                        </h3>
+                      </div>
+                      {file.url.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                        <img
+                          src={file.url}
+                          alt={file.name}
+                          className="w-full h-auto max-h-[60vh] object-contain rounded-lg shadow-lg"
+                        />
+                      ) : (
+                        <div className="w-full h-[60vh] rounded-lg overflow-hidden shadow-lg">
+                          <iframe
+                            src={file.url}
+                            title={file.name}
+                            className="w-full h-full"
+                          />
+                        </div>
+                      )}
+                      <div className="mt-2 flex justify-end">
+                        <button
+                          onClick={() => window.open(file.url, "_blank")}
+                          className="flex items-center gap-1 px-3 py-1.5 text-sm bg-black text-white rounded-lg hover:bg-gray-800"
+                        >
+                          <MdDownload size={16} />
+                          <span>İndir</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div>
                     <div className="bg-gray-50 p-2 mb-2 rounded-lg">
                       <h3 className="text-sm font-medium text-gray-900">
-                        {file.name}
+                        {previewReceipt.name}
                       </h3>
                     </div>
-                    {file.url.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                    {previewReceipt.url.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
                       <img
-                        src={file.url}
-                        alt={file.name}
+                        src={previewReceipt.url}
+                        alt={previewReceipt.name}
                         className="w-full h-auto max-h-[60vh] object-contain rounded-lg shadow-lg"
                       />
                     ) : (
                       <div className="w-full h-[60vh] rounded-lg overflow-hidden shadow-lg">
                         <iframe
-                          src={file.url}
-                          title={file.name}
+                          src={previewReceipt.url}
+                          title={previewReceipt.name}
                           className="w-full h-full"
                         />
                       </div>
                     )}
                     <div className="mt-2 flex justify-end">
                       <button
-                        onClick={() => window.open(file.url, "_blank")}
+                        onClick={() =>
+                          window.open(previewReceipt.url, "_blank")
+                        }
                         className="flex items-center gap-1 px-3 py-1.5 text-sm bg-black text-white rounded-lg hover:bg-gray-800"
                       >
                         <MdDownload size={16} />
@@ -473,19 +518,12 @@ export default function TransactionList() {
                       </button>
                     </div>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
         </div>
       )}
-
-      {/* Sayfalama */}
-      <div className="flex justify-between items-center">
-        <p className="text-sm text-gray-500">
-          Toplam {transactions.length} işlem gösteriliyor
-        </p>
-      </div>
     </div>
   );
 }

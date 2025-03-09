@@ -252,7 +252,7 @@ export default function TransactionForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
+        <div className="col-span-1">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Tarih
           </label>
@@ -267,11 +267,11 @@ export default function TransactionForm() {
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="col-span-1 md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             İşlem Türü
           </label>
-          <div className="relative flex items-center p-1 border border-gray-200 rounded-lg w-48">
+          <div className="relative flex items-center p-1 border border-gray-200 dark:border-gray-600 rounded-lg w-full sm:w-48">
             <div
               className={`absolute h-8 transition-all duration-200 ease-in-out rounded-lg ${
                 formData.type === "income"
@@ -285,7 +285,7 @@ export default function TransactionForm() {
               className={`relative z-10 flex-1 px-4 py-1.5 text-center text-sm font-medium transition-colors duration-200 ${
                 formData.type === "income"
                   ? "text-white"
-                  : "text-gray-600 hover:text-gray-800"
+                  : "text-gray-600 dark:text-gray-300 hover:text-gray-800"
               }`}
             >
               Gelir
@@ -296,7 +296,7 @@ export default function TransactionForm() {
               className={`relative z-10 flex-1 px-4 py-1.5 text-center text-sm font-medium transition-colors duration-200 ${
                 formData.type === "expense"
                   ? "text-white"
-                  : "text-gray-600 hover:text-gray-800"
+                  : "text-gray-600 dark:text-gray-300 hover:text-gray-800"
               }`}
             >
               Gider
@@ -304,7 +304,7 @@ export default function TransactionForm() {
           </div>
         </div>
 
-        <div>
+        <div className="col-span-1">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Kategori
           </label>
@@ -313,7 +313,9 @@ export default function TransactionForm() {
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
             }
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
+              focus:ring-2 focus:ring-blue-500 focus:border-transparent
+              bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             required
           >
             <option value="">Kategori Seçiniz</option>
@@ -325,7 +327,7 @@ export default function TransactionForm() {
           </select>
         </div>
 
-        <div>
+        <div className="col-span-1">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Tutar
           </label>
@@ -335,24 +337,25 @@ export default function TransactionForm() {
               value={formData.amount}
               onChange={handleAmountChange}
               onKeyDown={(e) => {
-                // Sadece sayılar, backspace ve delete tuşlarına izin ver
                 if (
                   !/[\d\b]/.test(e.key) &&
                   e.key !== "Backspace" &&
                   e.key !== "Delete" &&
-                  !e.ctrlKey // Ctrl+A gibi kombinasyonlara izin ver
+                  !e.ctrlKey
                 ) {
                   e.preventDefault();
                 }
               }}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
+                focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="0 TL"
               required
             />
           </div>
         </div>
 
-        <div>
+        <div className="col-span-1">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Ödeme Yöntemi
           </label>
@@ -361,7 +364,9 @@ export default function TransactionForm() {
             onChange={(e) =>
               setFormData({ ...formData, paymentMethod: e.target.value })
             }
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
+              focus:ring-2 focus:ring-blue-500 focus:border-transparent
+              bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             required
           >
             {paymentMethods.map((method) => (
@@ -372,7 +377,7 @@ export default function TransactionForm() {
           </select>
         </div>
 
-        <div className="md:col-span-2">
+        <div className="col-span-1 md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Açıklama
           </label>
@@ -382,14 +387,16 @@ export default function TransactionForm() {
             onChange={(e) =>
               setFormData({ ...formData, description: e.target.value })
             }
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
+              focus:ring-2 focus:ring-blue-500 focus:border-transparent
+              bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             placeholder="İşlem açıklaması giriniz"
           />
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl border border-gray-200 dark:border-gray-700 mt-6">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
           <h3 className="text-lg font-semibold">İşlem Dosyaları</h3>
           <label className="relative cursor-pointer">
             <input
@@ -415,17 +422,17 @@ export default function TransactionForm() {
           </label>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {files.map((file, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg group hover:bg-gray-100 transition-colors duration-200"
+              className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg group hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
             >
               <div
                 className="flex items-center space-x-3 min-w-0 cursor-pointer"
                 onClick={() => handleFileAction(file)}
               >
-                <div className="p-2 bg-white rounded-lg">
+                <div className="p-2 bg-white dark:bg-gray-800 rounded-lg">
                   {getFileType(file.name) === "image" ? (
                     <img
                       src={file.url}
@@ -437,10 +444,10 @@ export default function TransactionForm() {
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                     {file.name}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     {new Date(file.uploadedAt).toLocaleDateString("tr-TR")}
                   </p>
                 </div>
@@ -449,7 +456,7 @@ export default function TransactionForm() {
                 <button
                   type="button"
                   onClick={() => window.open(file.url, "_blank")}
-                  className="p-1 text-gray-500 hover:text-gray-700"
+                  className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                   title="İndir"
                 >
                   <MdDownload size={18} />
@@ -457,7 +464,7 @@ export default function TransactionForm() {
                 <button
                   type="button"
                   onClick={() => handleFileDelete(file)}
-                  className="p-1 text-gray-500 hover:text-red-600"
+                  className="p-1 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400"
                   disabled={isLoading}
                   title="Sil"
                 >
@@ -466,33 +473,33 @@ export default function TransactionForm() {
               </div>
             </div>
           ))}
-        </div>
 
-        {files.length === 0 && (
-          <div className="text-center py-8 px-4 border-2 border-dashed border-gray-200 rounded-lg">
-            <MdInsertDriveFile className="mx-auto h-12 w-12 text-gray-400" />
-            <p className="mt-2 text-sm text-gray-500">
-              Henüz dosya yüklenmemiş
-            </p>
-            <label className="mt-2 text-sm text-blue-600 hover:text-blue-800 cursor-pointer">
-              <input
-                type="file"
-                multiple
-                className="hidden"
-                onChange={handleFileUpload}
-                disabled={isLoading}
-              />
-              {isLoading ? "Yükleniyor..." : "Dosya Yükle"}
-            </label>
-          </div>
-        )}
+          {files.length === 0 && (
+            <div className="col-span-1 sm:col-span-2 text-center py-8 px-4 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg">
+              <MdInsertDriveFile className="mx-auto h-12 w-12 text-gray-400" />
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                Henüz dosya yüklenmemiş
+              </p>
+              <label className="mt-2 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer">
+                <input
+                  type="file"
+                  multiple
+                  className="hidden"
+                  onChange={handleFileUpload}
+                  disabled={isLoading}
+                />
+                {isLoading ? "Yükleniyor..." : "Dosya Yükle"}
+              </label>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex justify-end mt-6">
         <button
           type="submit"
           disabled={isLoading}
-          className={`w-full md:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg 
+          className={`w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg 
             hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 
             focus:ring-blue-500 transition-colors dark:bg-blue-500 dark:hover:bg-blue-600
             ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -541,14 +548,14 @@ export default function TransactionForm() {
               <MdClose size={24} />
             </button>
 
-            <div className="bg-white rounded-lg overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
               <img
                 src={previewFile.url}
                 alt={previewFile.name}
                 className="w-full h-auto max-h-[80vh] object-contain"
               />
-              <div className="p-4 border-t border-gray-200 flex items-center justify-between">
-                <p className="text-sm font-medium text-gray-900">
+              <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <p className="text-sm font-medium text-gray-900 dark:text-white">
                   {previewFile.name}
                 </p>
                 <button

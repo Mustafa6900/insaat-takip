@@ -297,33 +297,59 @@ const ArchivedProjectDetails = ({ params }) => {
     >
       <main className="pt-24 px-6 pb-6">
         <div className="max-w-[2000px] mx-auto">
-          {/* Header */}
-          <div className="flex justify-between items-center mb-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                {projectData.name}
-              </h2>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Toplam {categories.length} kategori
-              </p>
+          {/* Header - Mobil ve Desktop tasarımı güncellendi */}
+          <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            {/* Mobil görünüm (320-768px) */}
+            <div className="md:hidden">
+              <div className="flex flex-col gap-4">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {projectData.name}
+                  </h2>
+                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    Toplam {categories.length} kategori
+                  </p>
+                </div>
+
+                <button
+                  onClick={handleExportToExcel}
+                  className="flex items-center justify-center px-4 py-3 rounded-xl 
+                    bg-gradient-to-br from-green-500 to-green-600 
+                    text-white transition-all duration-300 
+                    w-full"
+                >
+                  <MdFileDownload className="w-5 h-5 mr-2" />
+                  <span className="font-medium">Excel&apos;e Aktar</span>
+                </button>
+              </div>
             </div>
-            <button
-              onClick={handleExportToExcel}
-              className="group inline-flex items-center px-6 py-3 rounded-xl 
-                bg-gradient-to-br from-green-500 to-green-600 
-                text-white transition-all duration-300 
-                hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/25 
-                active:scale-[0.98]"
-            >
-              <span className="relative flex items-center">
+
+            {/* Desktop görünüm (768px ve üzeri) */}
+            <div className="hidden md:flex md:justify-between md:items-start">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {projectData.name}
+                </h2>
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  Toplam {categories.length} kategori
+                </p>
+              </div>
+              <button
+                onClick={handleExportToExcel}
+                className="group inline-flex items-center px-6 py-3 rounded-xl 
+                  bg-gradient-to-br from-green-500 to-green-600 
+                  text-white transition-all duration-300 
+                  hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/25 
+                  active:scale-[0.98]"
+              >
                 <MdFileDownload className="w-5 h-5 mr-2" />
                 <span className="font-medium">Excel&apos;e Aktar</span>
-              </span>
-            </button>
+              </button>
+            </div>
           </div>
 
           {/* Proje Özeti */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 mt-4">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
               <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
                 Toplam Tutar
@@ -422,11 +448,7 @@ const ArchivedProjectDetails = ({ params }) => {
 
           {/* Kategoriler Grid */}
           <div
-            className={`grid gap-6 ${
-              isSidebarOpen
-                ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
-            }`}
+            className={`grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4`}
           >
             {categories.map((category) => {
               const stats = categoryStats[category.id] || {};
@@ -437,7 +459,7 @@ const ArchivedProjectDetails = ({ params }) => {
                   key={category.id}
                   href={`/archive/${projectId}/${category.id}`}
                   className={`
-                    block p-6 h-48 rounded-2xl
+                    block p-4 sm:p-6 h-64 md:h-56 rounded-xl
                     ${category.gradient || defaultTheme.class}
                     transform transition-all duration-200
                     hover:shadow-xl hover:scale-[1.02]
@@ -496,9 +518,8 @@ const ArchivedProjectDetails = ({ params }) => {
                         >
                           {isCompleted
                             ? "Ödeme Tamamlandı"
-                            : `Kalan Tutar: ${formatCurrency(
-                                stats.remainingAmount
-                              )}`}
+                            : `Kalan Tutar:  
+                            ${formatCurrency(stats.remainingAmount)}`}
                         </p>
                       </div>
                     </div>

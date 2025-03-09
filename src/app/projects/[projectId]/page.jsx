@@ -30,6 +30,7 @@ import {
   MdInsertDriveFile,
   MdDownload,
   MdDescription,
+  MdDelete,
 } from "react-icons/md";
 import { useSidebar } from "../../context/SidebarContext";
 import { toast } from "react-toastify";
@@ -454,11 +455,52 @@ const ProjectDetails = ({ params }) => {
       ${isSidebarOpen ? "pl-64" : "pl-20"}
     `}
     >
-      <main className="pt-24 px-6 pb-6">
-        <div className="space-y-8 max-w-[2000px] mx-auto">
+      <main className="pt-24 px-4 sm:px-6 pb-6">
+        <div className="space-y-6 max-w-[2000px] mx-auto">
           {/* Content Header */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="flex justify-between items-start mb-6">
+          <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            {/* Mobil görünüm (320-768px) */}
+            <div className="md:hidden">
+              <div className="flex flex-col gap-4">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {projectName}
+                  </h2>
+                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    Toplam {categories.length} kategori
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3 w-full">
+                  <button
+                    onClick={() => setIsDetailsModalOpen(true)}
+                    className="flex items-center justify-center px-4 py-3 rounded-xl 
+                      bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 
+                      border border-gray-200 dark:border-gray-600
+                      hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200
+                      w-full"
+                  >
+                    <MdDescription className="mr-2" size={20} />
+                    <span className="font-medium">Proje Detayları</span>
+                  </button>
+                  <button
+                    onClick={handleOpenModal}
+                    className="flex items-center justify-center px-4 py-3 rounded-xl 
+                      bg-gradient-to-br from-blue-500 to-blue-600 
+                      text-white transition-all duration-300 
+                      hover:shadow-lg hover:shadow-blue-500/25 
+                      active:scale-[0.98] relative overflow-hidden
+                      w-full"
+                  >
+                    <MdAdd className="mr-2" size={20} />
+                    <span className="font-medium">Yeni Kategori</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop görünüm (768px ve üzeri) */}
+            <div className="hidden md:flex md:justify-between md:items-start gap-4 mb-6">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                   {projectName}
@@ -470,7 +512,7 @@ const ProjectDetails = ({ params }) => {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setIsDetailsModalOpen(true)}
-                  className="group inline-flex items-center px-6 py-3 rounded-xl 
+                  className="group inline-flex items-center justify-center px-6 py-3 rounded-xl 
                     bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 
                     border border-gray-200 dark:border-gray-600
                     hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200"
@@ -480,30 +522,29 @@ const ProjectDetails = ({ params }) => {
                 </button>
                 <button
                   onClick={handleOpenModal}
-                  className="group inline-flex items-center px-6 py-3 rounded-xl 
+                  className="group inline-flex items-center justify-center px-6 py-3 rounded-xl 
                     bg-gradient-to-br from-blue-500 to-blue-600 
                     text-white transition-all duration-300 
                     hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/25 
                     active:scale-[0.98] relative overflow-hidden"
                 >
-                  <span className="relative flex items-center text-white">
-                    <MdAdd className="mr-2" size={20} />
-                    <span className="font-medium">Yeni Kategori</span>
-                  </span>
+                  <MdAdd className="mr-2" size={20} />
+                  <span className="font-medium">Yeni Kategori</span>
                 </button>
               </div>
             </div>
 
             {/* Proje Özeti */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-              <div className="bg-gray-50 rounded-lg p-4 dark:bg-gray-700">
-                <h3 className="text-sm font-medium text-gray-500 mb-1 dark:text-gray-400">
+            <div className="grid grid-cols-1 mt-6 md:grid-cols-3 gap-4 md:gap-6">
+              {/* Toplam Tutar Kartı */}
+              <div className="bg-gray-800 dark:bg-gray-700 p-6 rounded-xl">
+                <h3 className="text-gray-400 dark:text-gray-300 text-sm font-medium">
                   Toplam Tutar
                 </h3>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                <p className="mt-2 text-2xl font-bold text-white">
                   {formatCurrency(projectSummary.totalAmount)}
                 </p>
-                <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">
+                <p className="mt-1 text-sm text-gray-400">
                   Ödenen:{" "}
                   {formatCurrency(
                     projectSummary.totalAmount - projectSummary.remainingAmount
@@ -511,41 +552,41 @@ const ProjectDetails = ({ params }) => {
                 </p>
               </div>
 
-              <div className="bg-gray-50 rounded-lg p-4 dark:bg-gray-700">
-                <h3 className="text-sm font-medium text-gray-500 mb-1 dark:text-gray-400">
+              {/* Kalan Tutar Kartı */}
+              <div className="bg-gray-800 dark:bg-gray-700 p-6 rounded-xl">
+                <h3 className="text-gray-400 dark:text-gray-300 text-sm font-medium">
                   Kalan Tutar
                 </h3>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                <p className="mt-2 text-2xl font-bold text-white">
                   {formatCurrency(projectSummary.remainingAmount)}
                 </p>
-                <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">
-                  Ödenmesi Gereken
-                </p>
+                <p className="mt-1 text-sm text-gray-400">Ödenmesi Gereken</p>
               </div>
 
-              <div className="bg-gray-50 rounded-lg p-4 dark:bg-gray-700">
-                <h3 className="text-sm font-medium text-gray-500 mb-1 dark:text-gray-400">
+              {/* Yaklaşan Ödemeler Kartı */}
+              <div className="bg-gray-800 dark:bg-gray-700 p-6 rounded-xl">
+                <h3 className="text-gray-400 dark:text-gray-300 text-sm font-medium">
                   Yaklaşan Ödemeler
                 </h3>
-                <div className="space-y-2">
-                  {projectSummary.nextPayments
-                    .slice(0, 2)
-                    .map((payment, index) => (
-                      <div
-                        key={index}
-                        className="text-sm text-gray-900 dark:text-white flex justify-between"
-                      >
-                        <p>
-                          {payment.date.toLocaleDateString("tr-TR")} -{" "}
-                          {formatCurrency(payment.amount)}
-                        </p>
-                        <p className="font-medium">{payment.categoryName}</p>
-                      </div>
-                    ))}
-                  {projectSummary.nextPayments.length === 0 && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Yaklaşan ödeme yok
-                    </p>
+                <div className="mt-2">
+                  {projectSummary.nextPayments.length > 0 ? (
+                    projectSummary.nextPayments
+                      .slice(0, 2)
+                      .map((payment, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between text-white"
+                        >
+                          <span className="text-sm">
+                            {new Date(payment.date).toLocaleDateString("tr-TR")}
+                          </span>
+                          <span className="font-medium">
+                            {formatCurrency(payment.amount)}
+                          </span>
+                        </div>
+                      ))
+                  ) : (
+                    <p className="text-gray-400 text-sm">Yaklaşan ödeme yok</p>
                   )}
                 </div>
               </div>
@@ -553,16 +594,7 @@ const ProjectDetails = ({ params }) => {
           </div>
 
           {/* Categories Grid */}
-          <div
-            className={`
-            grid gap-6
-            ${
-              isSidebarOpen
-                ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
-            }
-          `}
-          >
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {categories.map((category) => {
               const stats = categoryStats[category.id] || {};
               const isCompleted = stats.remainingAmount === 0;
@@ -572,7 +604,7 @@ const ProjectDetails = ({ params }) => {
                   <Link
                     href={`/projects/${projectId}/${category.id}`}
                     className={`
-                      block p-6 h-48 rounded-2xl
+                      block p-4 sm:p-6 h-56 md:h-48 rounded-xl
                       ${category.gradient || defaultTheme.class}
                       transform transition-all duration-200
                       hover:shadow-xl hover:scale-[1.02]
@@ -580,41 +612,32 @@ const ProjectDetails = ({ params }) => {
                       relative overflow-hidden
                     `}
                   >
-                    {/* Koyu gradient için overlay */}
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-t 
-                      ${
-                        category.gradient?.includes("from-blue-50") ||
-                        category.gradient === defaultTheme.class
-                          ? "from-black/5 via-black/0"
-                          : "from-black/30 via-black/10"
-                      } 
-                      to-transparent`}
-                    ></div>
+                    <div className="flex flex-col h-full justify-between">
+                      <div className="space-y-2">
+                        <div className="flex flex-col">
+                          <h3
+                            className={`text-lg sm:text-xl font-bold break-words
+                            ${
+                              category.gradient?.includes("from-blue-50") ||
+                              category.gradient === defaultTheme.class
+                                ? "text-gray-900"
+                                : "text-white"
+                            }
+                          `}
+                          >
+                            {category.name}
+                          </h3>
+                        </div>
 
-                    <div className="h-full flex flex-col justify-between relative z-10">
-                      <div>
-                        <h3
-                          className={`text-xl font-semibold break-words
-                          ${
-                            category.gradient?.includes("from-blue-50") ||
-                            category.gradient === defaultTheme.class
-                              ? "text-gray-800"
-                              : "text-white"
-                          }`}
-                        >
-                          {category.name}
-                        </h3>
-
-                        {/* Özet Bilgiler */}
                         <div
-                          className={`mt-2 space-y-1
+                          className={`space-y-1
                           ${
                             category.gradient?.includes("from-blue-50") ||
                             category.gradient === defaultTheme.class
                               ? "text-gray-600"
                               : "text-white/80"
-                          }`}
+                          }
+                        `}
                         >
                           <p className="text-sm">
                             Toplam Tutar: {formatCurrency(stats.totalAmount)}
@@ -648,7 +671,8 @@ const ProjectDetails = ({ params }) => {
                             category.gradient === defaultTheme.class
                               ? "bg-black/5 text-gray-700"
                               : "bg-white/10 text-white"
-                          }`}
+                          }
+                        `}
                         >
                           Detayları Gör
                         </span>
@@ -659,7 +683,8 @@ const ProjectDetails = ({ params }) => {
                             category.gradient === defaultTheme.class
                               ? "bg-black/5 text-gray-700"
                               : "bg-white/20 text-white"
-                          }`}
+                          }
+                        `}
                         >
                           →
                         </span>
@@ -667,30 +692,17 @@ const ProjectDetails = ({ params }) => {
                     </div>
                   </Link>
 
-                  {/* Kategori işlem butonları */}
-                  <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-all duration-200">
+                  {/* İşlem butonları */}
+                  <div
+                    className={`
+                    absolute top-3 right-3 flex flex-col space-y-2 
+                    opacity-100 lg:opacity-0 lg:group-hover:opacity-100 
+                    transition-opacity duration-200
+                  `}
+                  >
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        e.stopPropagation();
-                        setDeleteCategoryId(category.id);
-                        setDeleteModalOpen(true);
-                      }}
-                      className={`p-2 rounded-full backdrop-blur-sm
-                        ${
-                          category.gradient?.includes("from-blue-50") ||
-                          category.gradient === defaultTheme.class
-                            ? "bg-black/5 text-gray-700 hover:bg-black/10"
-                            : "bg-black/20 text-white hover:bg-black/30"
-                        }`}
-                      aria-label="Kategoriyi Sil"
-                    >
-                      <MdClose size={18} />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
                         setEditingCategory(category);
                         setNewCategoryColor(category.gradient);
                         setIsColorEditModalOpen(true);
@@ -700,11 +712,30 @@ const ProjectDetails = ({ params }) => {
                           category.gradient?.includes("from-blue-50") ||
                           category.gradient === defaultTheme.class
                             ? "bg-black/5 text-gray-700 hover:bg-black/10"
-                            : "bg-black/20 text-white hover:bg-black/30"
-                        }`}
-                      aria-label="Rengi Düzenle"
+                            : "bg-white/20 text-white hover:bg-white/30"
+                        }
+                      `}
+                      title="Rengi Düzenle"
                     >
                       <MdColorLens size={18} />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setDeleteCategoryId(category.id);
+                        setDeleteModalOpen(true);
+                      }}
+                      className={`p-2 rounded-full backdrop-blur-sm
+                        ${
+                          category.gradient?.includes("from-blue-50") ||
+                          category.gradient === defaultTheme.class
+                            ? "bg-black/5 text-gray-700 hover:bg-black/10"
+                            : "bg-white/20 text-white hover:bg-white/30"
+                        }
+                      `}
+                      title="Kategoriyi Sil"
+                    >
+                      <MdDelete size={18} />
                     </button>
                   </div>
                 </div>
@@ -716,8 +747,8 @@ const ProjectDetails = ({ params }) => {
 
       {/* Add Category Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full mx-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md mx-4">
             <div className="p-6">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
                 Yeni Kategori Oluştur
@@ -743,7 +774,7 @@ const ProjectDetails = ({ params }) => {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                     Tema Seçin
                   </label>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Varsayılan tema */}
                     <button
                       onClick={() => setNewCategoryColor(defaultTheme.class)}
@@ -985,8 +1016,8 @@ const ProjectDetails = ({ params }) => {
 
       {/* Proje Detayları Modalı */}
       {isDetailsModalOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-hidden">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 {projectName} - Proje Detayları
@@ -1163,8 +1194,8 @@ const ProjectDetails = ({ params }) => {
 
       {/* Resim Önizleme Modalı */}
       {isPreviewModalOpen && previewFile && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="relative w-full max-w-4xl mx-4">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="relative w-full max-w-4xl">
             <button
               onClick={() => {
                 setIsPreviewModalOpen(false);

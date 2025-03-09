@@ -575,9 +575,9 @@ const ProjectDetails = ({ params }) => {
                       .map((payment, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between text-white"
+                          className="flex flex-col justify-start md:justify-between md:items-center md:flex-row text-white"
                         >
-                          <span className="text-sm">
+                          <span className="text-sm md:text-base">
                             {new Date(payment.date).toLocaleDateString("tr-TR")}
                           </span>
                           <span className="font-medium">

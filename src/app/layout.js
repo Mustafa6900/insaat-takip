@@ -42,8 +42,19 @@ export default function RootLayout({ children }) {
         <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
         <meta name="theme-color" content="#000000" />
-        <title>MYS - Müteahhit Yönetim Sistemi</title>
-        <meta name="description" content="Müteahhit Yönetim Sistemi" />
+        <title>MYS - Müteahhit Yönetim Sistemi | İnşaat Proje Yönetimi</title>
+        <meta name="description" content="İnşaat projelerinizi profesyonelce yönetin. Hakediş takibi, şantiye yönetimi, maliyet kontrolü ve iş programı takibi için özel tasarlanmış yazılım." />
+        
+        {/* SEO Meta Etiketleri */}
+        <meta name="keywords" content="müteahhit yazılımı, inşaat yönetim sistemi, hakediş takibi, şantiye yönetimi, proje yönetimi, maliyet kontrolü, iş programı, inşaat yazılımı, yapı takip sistemi" />
+        <meta name="author" content="MYS - Müteahhit Yönetim Sistemi" />
+        <meta name="robots" content="index, follow" />
+        
+        {/* Open Graph Meta Etiketleri */}
+        <meta property="og:title" content="MYS - Müteahhit Yönetim Sistemi | İnşaat Proje Yönetimi" />
+        <meta property="og:description" content="İnşaat projelerinizi profesyonelce yönetin. Hakediş takibi, şantiye yönetimi, maliyet kontrolü ve iş programı takibi için özel tasarlanmış yazılım." />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="tr_TR" />
       </head>
       <body className={jetbrainsMono.className} suppressHydrationWarning>
         <ThemeProvider 

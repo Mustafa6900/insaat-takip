@@ -4,12 +4,14 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { UserAuth } from './context/AuthContext';
 import { useTheme } from 'next-themes';
-import { MdPlayArrow, MdDevices, MdBusiness, MdCode, MdFactory, MdCampaign } from 'react-icons/md';
+import { MdPlayArrow, MdDevices, MdBusiness, MdCode, MdFactory, MdCampaign, MdDownload } from 'react-icons/md';
+import { useInstallPWA } from './hooks/useInstallPWA';
 
 export default function Home() {
   const { user, googleSignIn } = UserAuth();
   const router = useRouter();
   const { theme } = useTheme();
+  const { supportsPWA, installPWA } = useInstallPWA();
 
   useEffect(() => {
     if (user) {
@@ -169,15 +171,37 @@ export default function Home() {
             Mobil Uygulamamızı İndirin
           </h2>
           <p className="text-blue-50 mb-6 max-w-2xl mx-auto">
-            İş takip sistemimizi iOS ve Android cihazlarınıza indirerek her yerden erişim sağlayın. Bildirimler sayesinde önemli güncellemelerden anında haberdar olun.
+            {supportsPWA 
+              ? "Uygulamamızı cihazınıza yükleyerek tam ekran deneyimi yaşayın."
+              : "İş takip sistemimize mobil tarayıcınızdan erişebilir veya uygulamayı indirebilirsiniz."}
           </p>
           <div className="flex justify-center gap-4">
-            <button className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
-              App Store
-            </button>
-            <button className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
-              Google Play
-            </button>
+            {supportsPWA ? (
+              <button 
+                onClick={installPWA}
+                className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors flex items-center gap-2"
+              >
+                <MdDownload className="w-5 h-5" />
+                Uygulamayı Yükle
+              </button>
+            ) : (
+              <>
+                <a 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+                >
+                  App Store
+                </a>
+                <a 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+                >
+                  Google Play
+                </a>
+              </>
+            )}
           </div>
         </section>
       </main>

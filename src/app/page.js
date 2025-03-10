@@ -11,7 +11,7 @@ export default function Home() {
   const { user, googleSignIn } = UserAuth();
   const router = useRouter();
   const { theme } = useTheme();
-  const { supportsPWA, installPWA } = useInstallPWA();
+  const { supportsPWA, installPWA, isIOS } = useInstallPWA();
 
   useEffect(() => {
     if (user) {
@@ -171,36 +171,31 @@ export default function Home() {
             Mobil Uygulamamızı İndirin
           </h2>
           <p className="text-blue-50 mb-6 max-w-2xl mx-auto">
-            {supportsPWA 
-              ? "Uygulamamızı cihazınıza yükleyerek tam ekran deneyimi yaşayın."
-              : "İş takip sistemimize mobil tarayıcınızdan erişebilir veya uygulamayı indirebilirsiniz."}
+            {isIOS 
+              ? "Safari'de 'Ana Ekrana Ekle' seçeneğini kullanarak uygulamayı yükleyebilirsiniz."
+              : supportsPWA 
+                ? "Uygulamayı cihazınıza yükleyerek tam ekran deneyimi yaşayın."
+                : "İş takip sistemimize mobil tarayıcınızdan erişebilirsiniz."}
           </p>
           <div className="flex justify-center gap-4">
-            {supportsPWA ? (
+            {isIOS ? (
+              <div className="flex flex-col items-center gap-2 text-white">
+                <MdDownload className="w-8 h-8 animate-bounce" />
+                <p className="text-sm">Safari&apos;de açın ve &quot;Ana Ekrana Ekle&quot;ye dokunun</p>
+              </div>
+            ) : supportsPWA ? (
               <button 
                 onClick={installPWA}
-                className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors flex items-center gap-2"
+                className="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition-colors flex items-center gap-2"
               >
                 <MdDownload className="w-5 h-5" />
                 Uygulamayı Yükle
               </button>
             ) : (
-              <>
-                <a 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors"
-                >
-                  App Store
-                </a>
-                <a 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors"
-                >
-                  Google Play
-                </a>
-              </>
+              <div className="text-white">
+                <p>Bu tarayıcıda PWA desteği bulunmuyor.</p>
+                <p className="text-sm mt-2">Chrome veya Safari kullanarak uygulamayı yükleyebilirsiniz.</p>
+              </div>
             )}
           </div>
         </section>

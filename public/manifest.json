@@ -1,7 +1,7 @@
 {
   "name": "Müteahhit Yönetim Sistemi",
   "short_name": "MYS",
-  "description": "Müteahhit Yönetim Sistemi",
+  "description": "İnşaat projelerinizi profesyonelce yönetin",
   "icons": [
     {
       "src": "/icons/android-chrome-192x192.png",
@@ -17,23 +17,46 @@
     },
     {
       "src": "/icons/apple-touch-icon.png",
-      "sizes": "16x16",
-      "type": "image/png"
-    },
-    {
-      "src": "/icons/favicon-16x16.png",
-      "sizes": "16x16",
+      "sizes": "180x180",
       "type": "image/png"
     },
     {
       "src": "/icons/favicon-32x32.png",
       "sizes": "32x32",
       "type": "image/png"
+    },
+    {
+      "src": "/icons/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
     }
   ],
   "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#000000",
-  "display": "standalone",
-  "gcm_sender_id": "473707908580"
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Projeler",
+      "url": "/projects",
+      "icons": [
+        {
+          "src": "/icons/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Muhasebe",
+      "url": "/accounting",
+      "icons": [
+        {
+          "src": "/icons/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
 }

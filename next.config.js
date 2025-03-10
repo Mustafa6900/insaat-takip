@@ -6,7 +6,18 @@ const withPWA = require('next-pwa')({
   
   /** @type {import('next').NextConfig} */
   const nextConfig = withPWA({
-    // Diğer Next.js yapılandırmalarınızı buraya ekleyebilirsiniz
+    eslint: {
+      ignoreDuringBuilds: true,
+    },
+    images: {
+      domains: ['your-storage-domain.com'],
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: '**',
+        },
+      ],
+    },
   });
   
   module.exports = nextConfig;

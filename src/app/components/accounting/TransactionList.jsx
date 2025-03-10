@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { db, auth } from "@/app/firebase";
 import {
   collection,
@@ -20,6 +20,7 @@ import {
   MdReceipt,
   MdClose,
   MdDownload,
+  MdHourglassEmpty,
 } from "react-icons/md";
 import { useTheme } from "next-themes";
 
@@ -95,14 +96,11 @@ export default function TransactionList() {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      fetchTransactions();
+  const fetchTransactions = useCallback(async () => {
+    if (!user) {
+      console.log("Kullanıcı oturum açmamış");
+      return;
     }
-  }, [user]); // user değiştiğinde fetch işlemini tekrarla
-
-  const fetchTransactions = async () => {
-    if (!user) return;
 
     setLoading(true);
     try {
@@ -159,17 +157,21 @@ export default function TransactionList() {
       setTransactions(fetchedTransactions);
     } catch (error) {
       console.error("İşlemler yüklenirken hata:", error);
-      toast.error("İşlemler yüklenemedi: " + error.message);
+      if (error.code === "permission-denied") {
+        toast.error("Erişim izni hatası: Lütfen oturumunuzu kontrol edin");
+      } else {
+        toast.error("İşlemler yüklenemedi: " + error.message);
+      }
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, filters]);
 
   useEffect(() => {
     if (user) {
       fetchTransactions();
     }
-  }, [user, filters]);
+  }, [user, filters, fetchTransactions]);
 
   // İşlem silme fonksiyonu
   const handleDelete = async (transaction) => {
@@ -233,7 +235,16 @@ export default function TransactionList() {
   };
 
   if (loading) {
-    return <div>Yükleniyor...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="text-center">
+          <MdHourglassEmpty className="w-8 h-8 mx-auto text-gray-400 animate-spin" />
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            İşlemler yükleniyor...
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (

@@ -39,7 +39,7 @@ export default function Home() {
               İnşaat Projelerinizi Profesyonelce Yönetin
             </h1>
             <p className="text-lg text-blue-50 mb-8 animate-fadeInUp">
-              Hakediş takibinden şantiye yönetimine, maliyet kontrolünden iş programına kadar tüm inşaat süreçlerinizi tek platformda yönetin. Türkiye'nin önde gelen müteahhitleri tarafından tercih edilen yazılım çözümü.
+              Hakediş takibinden şantiye yönetimine, maliyet kontrolünden iş programına kadar tüm inşaat süreçlerinizi tek platformda yönetin. Türkiye&apos;nin önde gelen müteahhitleri tarafından tercih edilen yazılım çözümü.
             </p>
             <div className="flex flex-wrap gap-4">
               <button 

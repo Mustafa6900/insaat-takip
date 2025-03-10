@@ -21,6 +21,7 @@ import {
   MdFileDownload,
 } from "react-icons/md";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 // Varsayılan tema
 const defaultTheme = {
@@ -571,10 +572,12 @@ const ArchivedProjectDetails = ({ params }) => {
             </button>
 
             <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
-              <img
+              <Image
                 src={previewFile.url}
                 alt={previewFile.name}
-                className="w-full h-auto max-h-[80vh] object-contain"
+                width={500}
+                height={300}
+                className="w-full h-full object-cover"
               />
               <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
                 <p className="text-sm font-medium text-gray-900 dark:text-white">

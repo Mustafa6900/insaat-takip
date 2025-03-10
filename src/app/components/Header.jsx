@@ -671,6 +671,10 @@ const Header = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [setSidebarOpen]);
+
   return (
     <>
       {/* Karanlık overlay */}
@@ -793,6 +797,26 @@ const Header = () => {
                         Google ile Giriş Yap
                       </span>
                       <span className="lg:hidden">Giriş</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={toggleTheme}
+                      className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 
+                        transition-colors group"
+                      aria-label="Tema Değiştir"
+                    >
+                      {theme === "light" ? (
+                        <MdDarkMode
+                          className="h-5 w-5 md:h-6 md:w-6 text-gray-700 dark:text-gray-200 
+                          group-hover:text-gray-900 dark:group-hover:text-white"
+                        />
+                      ) : (
+                        <MdLightMode
+                          className="h-5 w-5 md:h-6 md:w-6 text-gray-200 
+                          group-hover:text-white"
+                        />
+                      )}
                     </button>
                   </li>
                 </>

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { MdTrendingUp, MdTrendingDown, MdAccountBalance } from "react-icons/md";
 import { db, auth } from "@/app/firebase";
 import {
@@ -41,13 +41,8 @@ export default function AccountingSummary() {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      fetchSummary();
-    }
-  }, [user]); // user değiştiğinde fetch işlemini tekrarla
-
-  const fetchSummary = async () => {
+  // fetchSummary fonksiyonunu useCallback ile sarmalayın ve user'ı dependency olarak ekleyin
+  const fetchSummary = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -96,7 +91,11 @@ export default function AccountingSummary() {
       console.error("Özet bilgileri yüklenirken hata:", error);
       toast.error("Özet bilgileri yüklenemedi: " + error.message);
     }
-  };
+  }, [user]); // user'ı dependency olarak ekleyin
+
+  useEffect(() => {
+    fetchSummary();
+  }, [user, fetchSummary]); // fetchSummary ve user'ı dependency olarak ekleyin
 
   // Tarih gösterimi için yardımcı fonksiyon
   const formatDate = (dateValue) => {

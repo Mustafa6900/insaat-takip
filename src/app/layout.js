@@ -45,6 +45,19 @@ export default function RootLayout({ children }) {
         <title>MYS - Müteahhit Yönetim Sistemi | İnşaat Proje Yönetimi</title>
         <meta name="description" content="İnşaat projelerinizi profesyonelce yönetin. Hakediş takibi, şantiye yönetimi, maliyet kontrolü ve iş programı takibi için özel tasarlanmış yazılım." />
         
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-1TPRE61TEX" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-1TPRE61TEX');
+            `,
+          }}
+        />
+        
         {/* SEO Meta Etiketleri */}
         <meta name="keywords" content="müteahhit yazılımı, inşaat yönetim sistemi, hakediş takibi, şantiye yönetimi, proje yönetimi, maliyet kontrolü, iş programı, inşaat yazılımı, yapı takip sistemi" />
         <meta name="author" content="MYS - Müteahhit Yönetim Sistemi" />

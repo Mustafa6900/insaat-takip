@@ -64,6 +64,9 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+
+        {/* Cookiebot */}
+        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="f9851b46-9e0f-4993-9864-c80cfe6baa27" type="text/javascript" async></script>
         
         {/* SEO Meta Etiketleri */}
         <meta name="keywords" content="müteahhit yazılımı, inşaat yönetim sistemi, hakediş takibi, şantiye yönetimi, proje yönetimi, maliyet kontrolü, iş programı, inşaat yazılımı, yapı takip sistemi" />
